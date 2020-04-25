@@ -1,6 +1,8 @@
 const moment = require("moment");
 moment.locale("it");
 
+
+
 exports.calcolaSlotDisponibili = (giornoScelto, medici, prenotazioni) => {
   const giorno = moment(giornoScelto).format("YYYY-MM-DD");
 
@@ -68,3 +70,4 @@ function rimuoviPrenotazioni(mappaDiUnGiorno, prenotazioni, date) {
   });
   return mappaDiUnGiorno;
 }
+

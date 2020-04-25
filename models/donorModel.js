@@ -7,10 +7,6 @@ var DonorSchema = new Schema({
     type: String,
     required: "Nome Utente",
   },
-  user_code: {
-    type: String,
-    required: "Codice Utente",
-  },
   created_date: {
     type: Date,
     default: Date.now,
