@@ -1,13 +1,16 @@
 const Doctors = require("./../models/doctorModel");
 const Reservations = require("./../models/reservationModel");
 const catchAsync = require("./../utils/catchAsync");
-const reservationService = require("./../services/reservationService");
+const ReservationService = require("./../services/reservationService");
 
 const moment = require("moment");
 moment.locale("it");
 
 exports.createReservation = catchAsync(async (req, res) => {
-  const newReservation = await Reservations.create(req.body);
+  req.body.module_path = req.file.path;
+
+const newReservation =( req.body.slot )? await ReservationService.createReservation(req.body) :await ReservationService.createManualReservation(req.body);
+
   res.status(201).json({
     status: "success",
     data: {
@@ -15,6 +18,9 @@ exports.createReservation = catchAsync(async (req, res) => {
     },
   });
 });
+
+
+
 
 exports.getDailyReservations = catchAsync(async (req, res) => {
   const date = req.body.searched_date

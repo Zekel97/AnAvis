@@ -26,6 +26,10 @@ var DonationSchema = new Schema({
       message: `Lo status può essere solo Processing e Concluded`,
     },
   },
+  report_path: {
+    type: String
+  }
+
 });
 
 module.exports = mongoose.model("Donation", DonationSchema);

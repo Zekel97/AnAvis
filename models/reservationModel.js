@@ -9,7 +9,7 @@ var ReservationSchema = new Schema({
   },
   created_date: {
     type: Date,
-    default: Date.now,
+    default: Date.now,o
   },
   date: {
     type: String,
@@ -19,6 +19,10 @@ var ReservationSchema = new Schema({
     type: String,
     required: "Slot orario della Prenotazione",
   },
+  module_path: {
+    type: String,
+    required: "E' necessario caricare un modulo per poter proseguire con la prenotazione."
+  }
 });
 
 module.exports = mongoose.model("Reservation", ReservationSchema);

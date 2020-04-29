@@ -1,5 +1,26 @@
-const moment = require("moment");
-moment.locale("it");
+const Reservation = require("./../models/reservationModel");
+const moment = require('moment');
+
+exports.deleteReservation = async (reservationId) => {
+  const reservation = await Reservation.findByIdAndDelete(reservationId);
+  return reservation;
+};
+
+
+
+exports.createReservation = async (reservationData) => {
+ return await Reservation.create(reservationData);
+}
+
+exports.createManualReservation = async (reservationData) => {
+reservationData.slot = "unreserved user";
+reservationData.date = moment().format("L");
+return await Reservation.create(reservationData);
+};
+
+
+
+
 
 
 
@@ -26,8 +47,6 @@ exports.calcolaSlotDisponibili = (giornoScelto, medici, prenotazioni) => {
       mappaDiUnGiorno.set("medici_non_disponibili", mediciNonDisponibili);
     }
   });
-
-  console.log(mappaDiUnGiorno);
 
   mappaDiUnGiorno = rimuoviPrenotazioni(
     mappaDiUnGiorno,
@@ -70,4 +89,3 @@ function rimuoviPrenotazioni(mappaDiUnGiorno, prenotazioni, date) {
   });
   return mappaDiUnGiorno;
 }
-
