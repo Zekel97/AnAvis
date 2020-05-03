@@ -9,7 +9,7 @@ var ReservationSchema = new Schema({
   },
   created_date: {
     type: Date,
-    default: Date.now,o
+    default: Date.now,
   },
   date: {
     type: String,
