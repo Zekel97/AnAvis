@@ -87,7 +87,7 @@ class ReservationMaker extends Component {
                       ncols={["col-md-6", "col-md-6"]}
                       properties={[
                         {
-                          label: "COdice",
+                          label: "Codice",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Nome Donatore",

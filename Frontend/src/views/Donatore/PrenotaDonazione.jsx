@@ -56,11 +56,12 @@ class PrenotaDonazione extends Component {
 
   handleChangeSelectedSlot = event => {
     this.setState({selectedSlot : event.target.value});
+    console.log(this.state.selectedSlot);
   }
 
   handleChangeCode = event => {
     this.setState({ user_code: event.target.value });
-    
+    console.log(this.state.user_code);
   }
 
   handleChangeDate = event => {
@@ -112,9 +113,8 @@ class PrenotaDonazione extends Component {
     }
 
   handleSubmit = event => {
-    event.preventDefault();
     console.log(this.state.selectedSlot);
-    const data = new FormData();
+    var data = new FormData();
 
     data.append('user_code', this.state.user_code);
     data.append('date', moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
@@ -123,12 +123,19 @@ class PrenotaDonazione extends Component {
 
     const url = 'http://localhost:3000/api/v1/reservations/';
 
-        
-    axios.post(url, data)
+    console.log(this.state.user_code+" - "+this.state.date+" - "+this.state.selectedSlot+" - "+this.state.module);
+    axios.post(url, {
+      "user_code":this.state.user_code,
+      "date":moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"),
+      "slot": this.state.selectedSlot,
+      "module":this.state.module
+    })
       .then(res => {
         console.log(res);
         console.log(res.data);
       })
+      window.location.reload(false);
+
       
   }
 
