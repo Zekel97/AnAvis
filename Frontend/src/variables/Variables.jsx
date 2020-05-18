@@ -270,6 +270,8 @@ const DocArray = ["ID", "Name", "Start Hour", "End Hour", "Working Days"];
 const ResArray = ["ID Prenotazione","ID Utente", "Slot Orario", "Modulo"];
 const DonArray = ["ID", "Name", "Blood Group", "Last Donation Date"];
 const OpenDonArray = ["ID Donazione", "Data Donazione", "Status", "Codice Utente" ];
+const SedeArray = ["ID", "Nome"];
+
 
 const tdArray = [
   ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout"],
@@ -608,6 +610,7 @@ module.exports = {
   ResArray,
   DonArray,
   OpenDonArray,
+  SedeArray,
   tdArray, // For tables (TableList view)
   iconsArray, // For icons (Icons view)
   dataPie,

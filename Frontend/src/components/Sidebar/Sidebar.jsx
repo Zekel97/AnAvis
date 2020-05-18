@@ -1,22 +1,6 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import Button from "components/CustomButton/CustomButton.jsx";
 
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
 
@@ -26,6 +10,7 @@ class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user_role: "/admin",
       width: window.innerWidth
     };
   }
@@ -39,6 +24,33 @@ class Sidebar extends Component {
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions.bind(this));
   }
+
+  changeToAnalista()
+  {
+    this.setState({user_role : "/analista"});
+  }
+  changeToDonatore()
+  {
+    this.setState({user_role : "/donatore"});
+  }
+  changeToDottore()
+  {
+    this.setState({user_role : "/doctor"});
+  }
+  changeToImpiegato()
+  {
+    this.setState({user_role : "/impiegato"});
+  }
+  changeToSedeAvis()
+  {
+    this.setState({user_role : "/sede-avis"});
+  }
+  changeToAvis()
+  {
+    this.setState({user_role : "/avis"});
+  }
+  
+
   render() {
     const sidebarBackground = {
       backgroundImage: "url(" + this.props.image + ")"
@@ -73,8 +85,16 @@ class Sidebar extends Component {
         <div className="sidebar-wrapper">
           <ul className="nav">
             {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
+            <Button type="button" onClick={() => this.changeToAnalista()}> Analista </Button>
+            <Button type="button" onClick={() => this.changeToDonatore()}> Donatore </Button>
+            <Button type="button" onClick={() => this.changeToDottore()}> Dottore </Button>
+            <Button type="button" onClick={() => this.changeToImpiegato()}> Impiegato </Button>
+            <Button type="button" onClick={() => this.changeToSedeAvis()}> Sede Avis </Button>
+            <Button type="button" onClick={() => this.changeToAvis()}>Avis </Button>
             {this.props.routes.map((prop, key) => {
-              if (!prop.redirect)
+              if (!prop.redirect && prop.layout=== this.state.user_role)
+              {
+                
                 return (
                   <li
                     className={
@@ -93,7 +113,7 @@ class Sidebar extends Component {
                       <p>{prop.name}</p>
                     </NavLink>
                   </li>
-                );
+                );}
               return null;
             })}
           </ul>
