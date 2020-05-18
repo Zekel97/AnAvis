@@ -26,7 +26,11 @@ exports.getDailyReservations = catchAsync(async (req, res) => {
   const date = req.body.searched_date
     ? req.body.searched_date
     : moment().format("L");
+
+  console.log(moment().format("L"));
+  
   const allReservations = await Reservations.find({ date });
+
   res.status(200).json({
     status: "success",
     data: {
@@ -59,9 +63,10 @@ exports.deleteReservation = catchAsync(async (req, res) => {
 
 exports.getDailySlots = catchAsync(async (req, res) => {
   const date = req.query.date;
-  
   const doctors = await Doctors.find();
   const reservations = await Reservations.find({ date: date });
+
+  console.log(date);
   const dailySlots = ReservationService.calcolaSlotDisponibili(
     date,
     doctors,

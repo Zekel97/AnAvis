@@ -12,7 +12,6 @@ router
 //donationMiddleware.userCanDonate
 
 
-
 router.route("/daily_slots").get(reservationsController.getDailySlots);
 
 router

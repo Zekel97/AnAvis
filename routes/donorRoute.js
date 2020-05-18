@@ -6,7 +6,13 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(donorController.getAllDonors)
-  .post(donorController.createDonor);
+    .get(donorController.getAllDonors)
+    .post(donorController.createDonor);
+  
+router
+    .route("/:id")
+    .get(donorController.getDonor)
+    .patch(donorController.updateDonor)
+    .delete(donorController.deleteDonor);
 
 module.exports = router;

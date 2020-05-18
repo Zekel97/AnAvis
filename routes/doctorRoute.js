@@ -9,4 +9,12 @@ router
   .get(doctorController.getAllDoctors)
   .post(doctorController.createDoctor);
 
+router
+  .route("/:id")
+  .get(doctorController.getDoctor)
+  .patch(doctorController.updateDoctor)
+  .delete(doctorController.deleteDoctor);
+
+
+
 module.exports = router;

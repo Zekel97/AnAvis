@@ -15,3 +15,16 @@ exports.createDonor = async (donorData) => {
     const newDonor = await Donor.create(donorData);
     return newDonor;
 }
+
+exports.updateDonor = async (donorId, donorData) => {
+    const newDonor = await Donor.findByIdAndUpdate(donorId, donorData, {
+        new: true,
+        runValidators: true
+      });
+    return newDonor;
+}
+
+exports.deleteDonor = async (donorId) => {
+    const donor = await Donor.findByIdAndDelete(donorId);
+    return donor;
+}
