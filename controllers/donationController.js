@@ -1,6 +1,3 @@
-const Donation = require("./../models/donationModel");
-const Reservation = require("./../models/reservationModel");
-const ReservationService = require("./../services/reservationService");
 const DonationService = require("./../services/donationService");
 
 const catchAsync = require("./../utils/catchAsync");

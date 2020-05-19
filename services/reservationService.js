@@ -6,6 +6,16 @@ exports.deleteReservation = async (reservationId) => {
   return reservation;
 };
 
+exports.findReservationById = async(reservationId) => {
+  const reservation = await Reservation.findById(reservationId);
+  return reservation;
+}
+
+exports.findReservationsByDate = async(date) => {
+  const reservations = await Reservation.find({date:date});
+  return reservations;
+}
+
 
 
 exports.createReservation = async (reservationData) => {

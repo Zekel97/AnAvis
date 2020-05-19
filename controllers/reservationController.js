@@ -1,13 +1,12 @@
-const Doctors = require("./../models/doctorModel");
-const Reservations = require("./../models/reservationModel");
 const catchAsync = require("./../utils/catchAsync");
 const ReservationService = require("./../services/reservationService");
+const DoctorService = require("./../services/doctorService");
 
 const moment = require("moment");
 moment.locale("it");
 
 exports.createReservation = catchAsync(async (req, res) => {
-  req.body.module_path = req.file.path;
+req.body.module_path = req.file.path;
 
 const newReservation =( req.body.slot )? await ReservationService.createReservation(req.body) :await ReservationService.createManualReservation(req.body);
 
@@ -29,7 +28,8 @@ exports.getDailyReservations = catchAsync(async (req, res) => {
 
   console.log(moment().format("L"));
   
-  const allReservations = await Reservations.find({ date });
+  //reservation service creare findbydate
+  const allReservations = await ReservationService.findReservationsByDate(date);
 
   res.status(200).json({
     status: "success",
@@ -41,7 +41,7 @@ exports.getDailyReservations = catchAsync(async (req, res) => {
 
 exports.getReservation = catchAsync(async (req, res) => {
   const reservationId = req.params.id;
-  const reservation = await Reservations.findById(reservationId);
+  const reservation = await ReservationService.findReservationById(reservationId);
 
   res.status(200).json({
     status: "success",
@@ -53,8 +53,7 @@ exports.getReservation = catchAsync(async (req, res) => {
 
 exports.deleteReservation = catchAsync(async (req, res) => {
   const reservationId = req.params.id;
-  await Reservations.findByIdAndDelete(reservationId);
-
+  await ReservationService.deleteReservation(reservationId);
   res.status(204).json({
     status: "success",
     data: null,
@@ -63,8 +62,8 @@ exports.deleteReservation = catchAsync(async (req, res) => {
 
 exports.getDailySlots = catchAsync(async (req, res) => {
   const date = req.query.date;
-  const doctors = await Doctors.find();
-  const reservations = await Reservations.find({ date: date });
+  const doctors = await DoctorService.getAllDoctors();
+  const reservations = await ReservationService.findReservationsByDate(date);
 
   console.log(date);
   const dailySlots = ReservationService.calcolaSlotDisponibili(
