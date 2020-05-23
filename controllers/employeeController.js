@@ -1,11 +1,12 @@
 const catchAsync = require("./../utils/catchAsync");
-const EmployeeService = require("./../services/employeeService")
+const AvisWorkerService = require("./../services/avisWorkerService");
+const AppError = require('./../utils/appError');
 
-const moment = require("moment");
-moment.locale("it");
+const employee_role = 'employee';
+
 
 exports.getAllEmployees = catchAsync(async (req, res) => {
-  const allEmployees = await EmployeeService.getAllEmployees();
+  const allEmployees = await AvisWorkerService.getAllWorkerByRole(employee_role);
 
   res.status(200).json({
     status: "success",
@@ -16,7 +17,7 @@ exports.getAllEmployees = catchAsync(async (req, res) => {
 });
 
 exports.createEmployee = catchAsync(async (req, res) => {
-  const newEmployee = await EmployeeService.createEmployee(req.body);
+  const newEmployee = await AvisWorkerService.createAvisWorker(req.body, employee_role);
   res.status(201).json({
     status: "success",
     data: {
@@ -28,7 +29,7 @@ exports.createEmployee = catchAsync(async (req, res) => {
 
 exports.updateEmployee = catchAsync(async (req, res, next) => {
 
-  const employee = await EmployeeService.updateEmployee(req.params.id, req.body);
+  const employee = await AvisWorkerService.updateAvisWorker(req.params.id, req.body);
 
   if(!employee){ return next(new AppError("No employee found with that ID",404))}
 
@@ -42,7 +43,7 @@ exports.updateEmployee = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteEmployee = catchAsync(async (req, res) => {
-const employee = await EmployeeService.deleteEmployee(req.params.id);
+const employee = await AvisWorkerService.deleteAvisWorker(req.params.id);
 if(!employee){ return next(new AppError("No employee found with that ID",404))}
    
 res.status(204).json({
@@ -54,7 +55,7 @@ res.status(204).json({
 
 exports.getEmployee = catchAsync(async (req, res) => {
   const employeeId = req.params.id;
-  const employee = await EmployeeService.getEmployeeById(employeeId);
+  const employee = await AvisWorkerService.getAvisWorkerById(employeeId);
 
   res.status(200).json({
     status: "success",

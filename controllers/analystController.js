@@ -1,8 +1,13 @@
 const catchAsync = require("./../utils/catchAsync");
-const AnalystService = require("./../services/analystService")
+const AvisWorkerService = require("./../services/avisWorkerService");
+const AppError = require('./../utils/appError');
+
+const analyst_role = 'analyst';
+
+
 
 exports.getAllAnalysts = catchAsync(async (req, res) => {
-  const allAnalysts = await AnalystService.getAllAnalysts();
+  const allAnalysts = await AvisWorkerService.getAllWorkerByRole(analyst_role);
 
   res.status(200).json({
     status: "success",
@@ -14,7 +19,7 @@ exports.getAllAnalysts = catchAsync(async (req, res) => {
 
 exports.getAnalyst = catchAsync(async (req, res) => {
   const analystId = req.params.id;
-  const analyst = await AnalystService.getAnalystById(analystId);
+  const analyst = await AvisWorkerService.getAvisWorkerById(analystId);
 
   res.status(200).json({
     status: "success",
@@ -26,7 +31,8 @@ exports.getAnalyst = catchAsync(async (req, res) => {
 
 
 exports.createAnalyst = catchAsync(async (req, res) => {
-  const newAnalyst = await AnalystService.createAnalyst(req.body);
+  req.body.role = analyst_role;
+  const newAnalyst = await AvisWorkerService.createAvisWorker(req.body, analyst_role);
   res.status(201).json({
     status: "success",
     data: {
@@ -38,7 +44,7 @@ exports.createAnalyst = catchAsync(async (req, res) => {
 
 exports.updateAnalyst = catchAsync(async (req, res, next) => {
 
-  const analyst = await AnalystService.updateAnalyst(req.params.id, req.body);
+  const analyst = await AvisWorkerService.updateAvisWorker(req.params.id, req.body);
 
   if(!analyst){ return next(new AppError("No analyst found with that ID",404))}
 
@@ -51,8 +57,8 @@ exports.updateAnalyst = catchAsync(async (req, res, next) => {
 
 });
 
-exports.deleteAnalyst = catchAsync(async (req, res) => {
-const analyst = await AnalystService.deleteAnalyst(req.params.id);
+exports.deleteAnalyst = catchAsync(async (req, res, next) => {
+const analyst = await AvisWorkerService.deleteAvisWorker(req.params.id);
 if(!analyst){ return next(new AppError("No analyst found with that ID",404))}
    
 res.status(204).json({

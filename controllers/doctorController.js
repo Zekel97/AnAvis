@@ -1,11 +1,11 @@
 const catchAsync = require("./../utils/catchAsync");
-const DoctorService = require("./../services/doctorService")
+const AvisWorkerService = require("./../services/avisWorkerService");
+const AppError = require('./../utils/appError');
 
-const moment = require("moment");
-moment.locale("it");
+const doctor_role = "doctor";
 
 exports.getAllDoctors = catchAsync(async (req, res) => {
-  const allDoctors = await DoctorService.getAllDoctors();
+  const allDoctors = await AvisWorkerService.getAllWorkerByRole(doctor_role);
 
   res.status(200).json({
     status: "success",
@@ -17,7 +17,7 @@ exports.getAllDoctors = catchAsync(async (req, res) => {
 
 exports.getDoctor = catchAsync(async (req, res) => {
   const doctorId = req.params.id;
-  const doctor = await DoctorService.getDoctorById(doctorId);
+  const doctor = await AvisWorkerService.getAvisWorkerById(doctorId);
 
   res.status(200).json({
     status: "success",
@@ -29,7 +29,7 @@ exports.getDoctor = catchAsync(async (req, res) => {
 
 
 exports.createDoctor = catchAsync(async (req, res) => {
-  const newDoctor = await DoctorService.createDoctor(req.body);
+  const newDoctor = await AvisWorkerService.createAvisWorker(req.body, doctor_role);
   res.status(201).json({
     status: "success",
     data: {
@@ -41,7 +41,7 @@ exports.createDoctor = catchAsync(async (req, res) => {
 
 exports.updateDoctor = catchAsync(async (req, res, next) => {
 
-  const doctor = await DoctorService.updateDoctor(req.params.id, req.body);
+  const doctor =await AvisWorkerService.updateAvisWorker(req.params.id, req.body);
 
   if(!doctor){ return next(new AppError("No doctor found with that ID",404))}
 
@@ -54,8 +54,8 @@ exports.updateDoctor = catchAsync(async (req, res, next) => {
 
 });
 
-exports.deleteDoctor = catchAsync(async (req, res) => {
-const doctor = await DoctorService.deleteDoctor(req.params.id);
+exports.deleteDoctor = catchAsync(async (req, res,next) => {
+const doctor = await AvisWorkerService.deleteAvisWorker(req.params.id);
 if(!doctor){ return next(new AppError("No doctor found with that ID",404))}
    
 res.status(204).json({
