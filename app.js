@@ -1,4 +1,6 @@
 const express = require("express");
+
+const authRoute = require("./routes/authRoute.js");
 const donationsRoute = require("./routes/donationRoute.js");
 const reservationsRoute = require("./routes/reservationRoute.js");
 const doctorsRoute = require("./routes/doctorRoute.js");
@@ -6,6 +8,8 @@ const donorsRoute = require("./routes/donorRoute.js");
 const analystsRoute = require("./routes/analystRoute.js");
 const employeesRoute = require("./routes/employeeRoute.js");
 const facilitiesRoute = require("./routes/facilityRoute.js");
+const usersRoute = require("./routes/userRoute.js");
+
 const cors = require("cors");
 
 
@@ -26,7 +30,8 @@ app.use("/api/v1/donors", donorsRoute);
 app.use("/api/v1/analysts", analystsRoute);
 app.use("/api/v1/facilities", facilitiesRoute);
 app.use("/api/v1/employees", employeesRoute);
-
+app.use("/api/v1/users", usersRoute);
+app.use("/api/v1/auth", authRoute);
 
 
 //Don't find route, return 404

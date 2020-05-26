@@ -1,6 +1,6 @@
 const catchAsync = require("./../utils/catchAsync");
 const ReservationService = require("./../services/reservationService");
-const DoctorService = require("./../services/doctorService");
+const AvisWorkerService = require("./../services/avisWorkerService");
 
 const moment = require("moment");
 moment.locale("it");
@@ -62,7 +62,7 @@ exports.deleteReservation = catchAsync(async (req, res) => {
 
 exports.getDailySlots = catchAsync(async (req, res) => {
   const date = req.query.date;
-  const doctors = await DoctorService.getAllDoctors();
+  const doctors = await AvisWorkerService.getAllWorkerByRole('doctor');
   const reservations = await ReservationService.findReservationsByDate(date);
 
   console.log(date);

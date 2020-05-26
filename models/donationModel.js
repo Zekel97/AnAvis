@@ -11,6 +11,10 @@ var DonationSchema = new Schema({
   creation_date: {
     type: Date,
     default: Date.now,
+  },  
+  facility_code: {
+    type: String,
+    required: "Codice della Sede alla quale il donatore appartiene",
   },
 
   donation_date: {

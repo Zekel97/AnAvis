@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-
+const User = require("./userModel");
 var Schema = mongoose.Schema;
 
 var AvisWorkerSchema = new Schema({
@@ -36,6 +36,11 @@ var AvisWorkerSchema = new Schema({
       },
     },
   ],
+  user_id:{
+    type:String,
+    unique: true,
+    required: "E' necessario associare un lavoratore avis ad un'utente."
+  },
   role: [
     {
       type: String,
@@ -51,5 +56,6 @@ var AvisWorkerSchema = new Schema({
     },
   ],
 });
+
 
 module.exports = mongoose.model("AvisWorker", AvisWorkerSchema);

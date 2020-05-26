@@ -1,5 +1,7 @@
-const catchAsync = require("./../utils/catchAsync");
+const userService = require("./userService");
 const Facility = require("./../models/facilityModel");
+
+
 exports.getFacilityById = async (id) => {
     const facility = await Facility.findById(id);
     return facility;
@@ -11,6 +13,12 @@ exports.getAllFacilities = async () => {
 }
 
 exports.createFacility = async (facilityData) => {
+
+    facilityData.role = "facility";
+    const newUser = await userService.createUser(facilityData.mail,facilityData.password,facilityData.role);
+    if(!newUser){ return null;}
+
+    facilityData.user_id = newUser._id;
     const newFacility = await Facility.create(facilityData);
     return newFacility;
 }
@@ -24,6 +32,8 @@ exports.updateFacility = async (facilityId, facilityData) => {
 }
 
 exports.deleteFacility = async (facilityId) => {
-    const facility = await Facility.findByIdAndDelete(facilityId);
-    return facility;
+    const facility = await Facility.findById(facilityId);
+    await userService.deleteUser(facility.user_id);
+    const deletedFacility = await Facility.findByIdAndDelete(facilityId);
+    return deletedFacility;
 }

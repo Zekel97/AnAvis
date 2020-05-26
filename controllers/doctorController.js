@@ -28,8 +28,9 @@ exports.getDoctor = catchAsync(async (req, res) => {
 });
 
 
-exports.createDoctor = catchAsync(async (req, res) => {
+exports.createDoctor = catchAsync(async (req, res,next) => {
   const newDoctor = await AvisWorkerService.createAvisWorker(req.body, doctor_role);
+  if(!newDoctor) {return next(new AppError())}
   res.status(201).json({
     status: "success",
     data: {

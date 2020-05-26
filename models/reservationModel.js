@@ -19,6 +19,10 @@ var ReservationSchema = new Schema({
     type: String,
     required: "Slot orario della Prenotazione",
   },
+  facility_code: {
+    type: String,
+    required: "Codice della Sede alla quale il donatore appartiene",
+  },
   module_path: {
     type: String,
     required: "E' necessario caricare un modulo per poter proseguire con la prenotazione."
