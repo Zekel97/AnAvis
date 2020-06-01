@@ -1,13 +1,21 @@
 const Donor = require("./../models/donorModel");
 const userService = require("./userService");
 
+const moment = require("moment");
+moment.locale("it");
+
 exports.getDonorById = async (id) => {
     const donor = await Donor.findById(id);
     return donor;
   };
 
+  exports.getDonorByUserId = async (id) => {
+    const donor = await Donor.findOne({"user_id": id});
+    return donor;
+  };
+
 exports.getDonorsByFacility = async (facilityId) => {
-    const donors = await Donor.find({"facility_code": seatId})
+    const donors = await Donor.find({"facility_code": facilityId})
     return donors;
 }
 
@@ -42,4 +50,16 @@ exports.deleteDonor = async (donorId) => {
     await userService.deleteUser(donor.user_id);
     const deletedDonor = await Donor.findByIdAndDelete(donorId);
     return deletedDonor;
+}
+
+
+exports.getDonorsByFacilityAndBloodType = async (facility, bloodType)=>{
+  const donors = await Donor.find({"facility_code": facility, "blood_group": bloodType})
+  return donors;
+}
+
+exports.donorCanDonate = (donor) => {
+  const last_donation = donor.last_donation_date;
+  console.log((moment(last_donation).add(3, "M").isAfter(moment())));
+  return !(moment(last_donation).add(3, "M").isAfter(moment()));
 }
