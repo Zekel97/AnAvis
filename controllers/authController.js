@@ -1,6 +1,10 @@
 const catchAsync = require("./../utils/catchAsync");
 const userService = require("./../services/userService");
 
+const donorService = require("./../services/donorService");
+const avisWorkerService = require("./../services/avisWorkerService");
+const facilityService = require("./../services/facilityService");
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -23,11 +27,17 @@ exports.me = catchAsync(async (req, res, next) => {
     const token = req.headers['x-access-token'];
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
     
-    jwt.verify(token, process.env.JWY_SECRET_KEY, function(err, decoded) {
+    jwt.verify(token, process.env.JWY_SECRET_KEY,async function(err, decoded) {
       if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
       
-      res.status(200).json(decoded);
+      let user;
+      if(decoded.role==="employee" || "doctor" || "analyst") {user = await avisWorkerService.getAvisWorkerByUserId(decoded.id);}
+      if(decoded.role==="donor") {user = await donorService.getDonorByUserId(decoded.id);}
+      if(decoded.role==="facility") {user = await facilityService.getFacilitiesByUserId(decoded.id);}
+      
+      if(!user) {return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });}
+      else {
+      res.status(200).json(user);}
     });
 });
         
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlY2I3ZTFjOTNjYTg1MWZlMTE0Nzk3MSIsInJvbGUiOlsiZG9jdG9yIl0sImlhdCI6MTU5MDM5NDc1NywiZXhwIjoxNTkwNDgxMTU3fQ.9nKfF2ganFX-0BUfNCtym3wMlN9H_R9jzdZiYLo5VsM

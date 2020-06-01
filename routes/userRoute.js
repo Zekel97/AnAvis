@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(userController.getAllUser);
+  .get(authMiddleware.checkAuth, authMiddleware.allowOnlyRole("facility"),userController.getAllUser);
 
   //.get(authMiddleware.allowOnlyRole("doctor"), userController.getAllUser);
 
