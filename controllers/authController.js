@@ -28,12 +28,12 @@ exports.me = catchAsync(async (req, res, next) => {
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
     
     jwt.verify(token, process.env.JWY_SECRET_KEY,async function(err, decoded) {
-      if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
-      
+      //if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
+      console.log(decoded.role);
       let user;
-      if(decoded.role==="employee" || "doctor" || "analyst") {user = await avisWorkerService.getAvisWorkerByUserId(decoded.id);}
-      if(decoded.role==="donor") {user = await donorService.getDonorByUserId(decoded.id);}
-      if(decoded.role==="facility") {user = await facilityService.getFacilitiesByUserId(decoded.id);}
+      if(decoded.role[0]==="employee" || "doctor" || "analyst") {user = await avisWorkerService.getAvisWorkerByUserId(decoded.id);}
+      if(decoded.role[0]==="donor") {user = await donorService.getDonorByUserId(decoded.id);}
+      if(decoded.role[0]==="facility") {user = await facilityService.getFacilitiesByUserId(decoded.id);}
       
       if(!user) {return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });}
       else {
