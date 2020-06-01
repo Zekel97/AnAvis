@@ -1,5 +1,4 @@
 const DonationService = require("./../services/donationService");
-
 const catchAsync = require("./../utils/catchAsync");
 
 const moment = require("moment");
@@ -16,7 +15,7 @@ exports.getDonation = catchAsync(async(req,res) =>{
 }); 
 
 exports.getOpenDonations = catchAsync(async (req, res) => {
-  const openDonations = await DonationService.getOpenDonations();
+  const openDonations = await DonationService.getOpenDonationsInFacility(req.body.facility_code);
   res.status(200).json({
     status: "success",
     data: {
@@ -29,7 +28,7 @@ exports.getOpenDonations = catchAsync(async (req, res) => {
 exports.startDonation = catchAsync(async (req, res) => {
   const reservationId = req.params.reservationId;
   const newDonation = await DonationService.createDonationFromReservationId(reservationId);
-
+  
   res.status(201).json({
     status: "success",
     data: {

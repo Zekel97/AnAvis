@@ -3,7 +3,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var DonationSchema = new Schema({
-  user_code: {
+  donor_id: {
     type: String,
     required: "User Code",
   },
@@ -33,6 +33,8 @@ var DonationSchema = new Schema({
   report_path: {
     type: String
   }
+//aggiungere analista associato 
+//aggiungere medico associato   (da vedere quanto tempo sprecherebbe)
 
 });
 
