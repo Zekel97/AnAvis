@@ -1,11 +1,12 @@
 const catchAsync = require("./../utils/catchAsync");
 const AvisWorkerService = require("./../services/avisWorkerService");
+const facilityService = require("./../services/facilityService");
 const AppError = require('./../utils/appError');
 
 const doctor_role = "doctor";
 
 exports.getAllDoctors = catchAsync(async (req, res) => {
-  const allDoctors = await AvisWorkerService.getAllWorkerByRole(doctor_role);
+  const allDoctors = await AvisWorkerService.getWorkerByRoleInFacility(doctor_role, req.body.facility_code);
 
   res.status(200).json({
     status: "success",
@@ -29,6 +30,11 @@ exports.getDoctor = catchAsync(async (req, res) => {
 
 
 exports.createDoctor = catchAsync(async (req, res,next) => {
+  //mettere controllo campi obbligatori
+  
+  const facility = await facilityService.getFacilitiesByUserId(req.jwt_user.id);
+  req.body.facility_code = facility._id;
+
   const newDoctor = await AvisWorkerService.createAvisWorker(req.body, doctor_role);
   if(!newDoctor) {return next(new AppError())}
   res.status(201).json({

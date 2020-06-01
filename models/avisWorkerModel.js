@@ -1,11 +1,14 @@
+/**
+ * Aggiustare descrizione di role, qui solo quelli relativi all'avis worker, su user quelli relativi allo user invece.
+ */
+
 var mongoose = require("mongoose");
-const User = require("./userModel");
 var Schema = mongoose.Schema;
 
 var AvisWorkerSchema = new Schema({
   name: {
     type: String,
-    required: "Codice Utente",
+    required: "Inserire un nome per il lavoratore avis",
   },
   created_date: {
     type: Date,
@@ -18,6 +21,10 @@ var AvisWorkerSchema = new Schema({
   end_hour: {
     type: String,
     required: "Orario di Fine Lavoro",
+  },
+  facility_code: {
+    type: String,
+    required: "Codice della Sede alla quale il donatore appartiene",
   },
   working_days: [
     {

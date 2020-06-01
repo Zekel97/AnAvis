@@ -1,12 +1,13 @@
 const catchAsync = require("./../utils/catchAsync");
 const AvisWorkerService = require("./../services/avisWorkerService");
+const facilityService = require("./../services/facilityService");
 const AppError = require('./../utils/appError');
 
 const employee_role = 'employee';
 
 
 exports.getAllEmployees = catchAsync(async (req, res) => {
-  const allEmployees = await AvisWorkerService.getAllWorkerByRole(employee_role);
+  const allEmployees = await AvisWorkerService.getWorkerByRoleInFacility(employee_role,req.body.facility_code);
 
   res.status(200).json({
     status: "success",
@@ -17,6 +18,10 @@ exports.getAllEmployees = catchAsync(async (req, res) => {
 });
 
 exports.createEmployee = catchAsync(async (req, res) => {
+
+  const facility = await facilityService.getFacilitiesByUserId(req.jwt_user.id);
+  req.body.facility_code = facility._id;
+
   const newEmployee = await AvisWorkerService.createAvisWorker(req.body, employee_role);
   res.status(201).json({
     status: "success",

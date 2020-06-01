@@ -6,6 +6,11 @@ exports.getAvisWorkerById = async (id) => {
     return avisWorker;
   };
 
+  exports.getAvisWorkerByUserId = async (id) => {
+    const avisWorker = await AvisWorker.findOne({"user_id": id});
+    return avisWorker;
+  };
+
   exports.createAvisWorker = async (data, role) => {
     data.role = role;
     const newUser = await userService.createUser(data.mail,data.password,data.role);
@@ -18,6 +23,11 @@ exports.getAvisWorkerById = async (id) => {
 
 exports.getAllWorkerByRole = async (role) => {
     const avisWorkers = await AvisWorker.find({"role":role});
+    return avisWorkers;
+}
+
+exports.getWorkerByRoleInFacility = async (role, facility) => {
+    const avisWorkers = await AvisWorker.find({"role":role, "facility_code":facility});
     return avisWorkers;
 }
 
