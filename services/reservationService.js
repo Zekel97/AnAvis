@@ -16,6 +16,10 @@ exports.findReservationsByDate = async(date) => {
   return reservations;
 }
 
+exports.findReservationsByDateInFacility = async(date, facility_code) => {
+  const reservations = await Reservation.find({"date":date, "facility_code":facility_code});
+  return reservations;
+}
 
 
 exports.createReservation = async (reservationData) => {
@@ -36,7 +40,6 @@ return await Reservation.create(reservationData);
 
 exports.calcolaSlotDisponibili = (giornoScelto, medici, prenotazioni) => {
   const giorno = moment(giornoScelto).format("YYYY-MM-DD");
-
   var mappaDiUnGiorno = new Map();
 
   mappaDiUnGiorno.set("date", moment(giornoScelto).format("L"));
@@ -57,7 +60,6 @@ exports.calcolaSlotDisponibili = (giornoScelto, medici, prenotazioni) => {
       mappaDiUnGiorno.set("medici_non_disponibili", mediciNonDisponibili);
     }
   });
-
   mappaDiUnGiorno = rimuoviPrenotazioni(
     mappaDiUnGiorno,
     prenotazioni,
@@ -87,8 +89,9 @@ function calcolaSlotOrariInUnGiorno(result, giorno, start_hour, end_hour) {
 }
 
 function rimuoviPrenotazioni(mappaDiUnGiorno, prenotazioni, date) {
+
   prenotazioni.forEach((prenotazione) => {
-    if (prenotazione.date === date) {
+    if (prenotazione.date === date && prenotazione.slot !== "unreserved user") {
       var numeroPrenotazioni = mappaDiUnGiorno.get(prenotazione.slot) - 1;
       if (numeroPrenotazioni === 0) {
         mappaDiUnGiorno.delete(prenotazione.slot);

@@ -3,9 +3,13 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var ReservationSchema = new Schema({
-  user_code: {
+  accepted_by: {
     type: String,
-    required: "Codice Utente",
+    required: "Inserire id del dottore che ha accettato la prenotazione",
+  },
+  donor_id:{
+    type: String,
+    required: "Inserire l'id del donatore associato",
   },
   created_date: {
     type: Date,

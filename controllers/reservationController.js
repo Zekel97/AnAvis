@@ -7,7 +7,7 @@ moment.locale("it");
 
 exports.createReservation = catchAsync(async (req, res) => {
 req.body.module_path = req.file.path;
-
+req.body.accepted_by = req.jwt_user.id;
 const newReservation =( req.body.slot )? await ReservationService.createReservation(req.body) :await ReservationService.createManualReservation(req.body);
 
   res.status(201).json({
@@ -26,10 +26,8 @@ exports.getDailyReservations = catchAsync(async (req, res) => {
     ? req.body.searched_date
     : moment().format("L");
 
-  console.log(moment().format("L"));
-  
   //reservation service creare findbydate
-  const allReservations = await ReservationService.findReservationsByDate(date);
+  const allReservations = await ReservationService.findReservationsByDateInFacility(date, req.body.facility_code);
 
   res.status(200).json({
     status: "success",
@@ -61,11 +59,9 @@ exports.deleteReservation = catchAsync(async (req, res) => {
 });
 
 exports.getDailySlots = catchAsync(async (req, res) => {
-  const date = req.query.date;
+  const date = (req.query.date!=null)?req.query.date:moment().format("YYYY-MM-DD");
   const doctors = await AvisWorkerService.getAllWorkerByRole('doctor');
-  const reservations = await ReservationService.findReservationsByDate(date);
-
-  console.log(date);
+  const reservations = await ReservationService.findReservationsByDateInFacility(moment(date, "YYYY-MM-DD").format("L"), req.body.facility_code);
   const dailySlots = ReservationService.calcolaSlotDisponibili(
     date,
     doctors,
