@@ -1,20 +1,24 @@
 const express = require("express");
 
 const facilityController = require("./../controllers/facilityController");
+const authMiddleware = require("./../middlewares/authMiddleware");
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(facilityController.getAllFacilities)
-  .post(facilityController.createFacility);
+  .get(authMiddleware.checkAuth,facilityController.getAllFacilities)
+  .post(authMiddleware.checkAuth,facilityController.createFacility);
 
 router
   .route("/:id")
-  .get(facilityController.getFacility)
-  .patch(facilityController.updateFacility)
-  .delete(facilityController.deleteFacility);
+  .get(authMiddleware.checkAuth,facilityController.getFacility)
+  .patch(authMiddleware.checkAuth,facilityController.updateFacility)
+  .delete(authMiddleware.checkAuth,facilityController.deleteFacility);
 
+router
+  .route("/:id/require_blood")
+  .post(authMiddleware.checkAuth,facilityController.requireBlood);
 
 
 module.exports = router;

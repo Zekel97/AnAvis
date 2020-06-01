@@ -1,19 +1,20 @@
 const express = require("express");
 
 const analystController = require("./../controllers/analystController");
+const authMiddleware = require("./../middlewares/authMiddleware");
 
 const router = express.Router();
 
 router
   .route("/")
-  .get(analystController.getAllAnalysts)
-  .post(analystController.createAnalyst);
+  .get(authMiddleware.checkAuth,authMiddleware.checkFacilityCode, analystController.getAllAnalysts)
+  .post(authMiddleware.checkAuth,analystController.createAnalyst);
 
 router
   .route("/:id")
-  .get(analystController.getAnalyst)
-  .patch(analystController.updateAnalyst)
-  .delete(analystController.deleteAnalyst);
+  .get(authMiddleware.checkAuth,analystController.getAnalyst)
+  .patch(authMiddleware.checkAuth,analystController.updateAnalyst)
+  .delete(authMiddleware.checkAuth,analystController.deleteAnalyst);
 
 
 

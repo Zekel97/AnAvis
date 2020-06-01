@@ -2,18 +2,21 @@ const express = require("express");
 
 const doctorController = require("./../controllers/doctorController");
 
+const authMiddleware = require("./../middlewares/authMiddleware");
+
+
 const router = express.Router();
 
 router
   .route("/")
-  .get(doctorController.getAllDoctors)
-  .post(doctorController.createDoctor);
+  .get(authMiddleware.checkAuth, authMiddleware.checkFacilityCode,doctorController.getAllDoctors)
+  .post(authMiddleware.checkAuth, authMiddleware.allowOnlyRole("facility"), doctorController.createDoctor);
 
 router
   .route("/:id")
-  .get(doctorController.getDoctor)
-  .patch(doctorController.updateDoctor)
-  .delete(doctorController.deleteDoctor);
+  .get(authMiddleware.checkAuth,doctorController.getDoctor)
+  .patch(authMiddleware.checkAuth,doctorController.updateDoctor)
+  .delete(authMiddleware.checkAuth,doctorController.deleteDoctor);
 
 
 

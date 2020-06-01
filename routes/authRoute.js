@@ -1,6 +1,7 @@
 const express = require("express");
 
 const authController = require("./../controllers/authController");
+const authMiddleware = require("./../middlewares/authMiddleware")
 
 const router = express.Router();
 
@@ -10,6 +11,6 @@ router
   
 router
     .route("/me")
-    .get(authController.me);
+    .get(authMiddleware.checkAuth,authController.me);
 
 module.exports = router;
