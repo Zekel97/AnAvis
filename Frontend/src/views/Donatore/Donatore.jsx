@@ -5,6 +5,7 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Card from "components/Card/Card.jsx";
 import { DonArray } from "variables/Variables.jsx";
 import axios from "axios";
+import AuthService from "../../services/auth.service";
 
 class Donatore extends Component {
   state = {
@@ -21,7 +22,10 @@ class Donatore extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/donors/';
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
       this.setState({ donors: data.data.donors })
@@ -59,17 +63,15 @@ setEditId = event => {
     
     const url = 'http://localhost:3000/api/v1/donors/'+event;
     console.log(url);
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
       this.setState({ donorView: data.data.donor })
-      console.log(this.state.donorView)
       })
-      
-      //TODO 
-    
-    //appare form con dati inseriti al posto dei placeholder
-    //sostituire con i dati di donorView State
+
 }
 
 indietro = event => {

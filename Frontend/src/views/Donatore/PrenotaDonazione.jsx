@@ -15,6 +15,8 @@ import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import moment from 'moment';
+import authHeader from "../../services/auth-header";
+import AuthService from "../../services/auth.service";
 
 moment.locale("it");
 
@@ -26,7 +28,6 @@ function toLocalDate(date){
 
 class PrenotaDonazione extends Component {
   state = {
-    user_code: '',
     module: null,
     date: '',
     slot: '',
@@ -59,11 +60,6 @@ class PrenotaDonazione extends Component {
     console.log(this.state.selectedSlot);
   }
 
-  handleChangeCode = event => {
-    this.setState({ user_code: event.target.value });
-    console.log(this.state.user_code);
-  }
-
   handleChangeDate = event => {
 
     this.setState({ date:  event.target.value });
@@ -74,13 +70,16 @@ class PrenotaDonazione extends Component {
     {
         if(moment(trueDate,"DD/MM/YYYY").isAfter(moment()))
         {
-            const url = 'http://localhost:3000/api/v1/reservations/daily_slots';
-            axios.get(url, {
-                params: {
-                  date: moment(trueDate,"DD/MM/YYYY").format("YYYY-MM-DD")
+            const url = 'http://localhost:3000/api/v1/reservations/daily_slots?date=';
+            console.log("x-access-token"+AuthService.getCurrentToken());
+            console.log(url+moment(trueDate,"DD/MM/YYYY").format("YYYY-MM-DD"));
+            axios.get(url+moment(trueDate,"DD/MM/YYYY").format("YYYY-MM-DD"), {
+                headers: {
+                  "x-access-token":AuthService.getCurrentToken()
                 }
               }).then(response => response.data)
               .then((data) => {
+
                   let slot = new Array();
                   Object.keys(data.data).map((prop, key) => {
                     if(prop !== 'date' && prop!== 'giorno' && prop !== 'medici_non_disponibili'){
@@ -113,23 +112,19 @@ class PrenotaDonazione extends Component {
     }
 
   handleSubmit = event => {
-    console.log(this.state.selectedSlot);
-    var data = new FormData();
-
-    data.append('user_code', this.state.user_code);
-    data.append('date', moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
-    data.append('slot', this.state.selectedSlot);
-    data.append('module', this.state.module);
 
     const url = 'http://localhost:3000/api/v1/reservations/';
-
-    console.log(this.state.user_code+" - "+this.state.date+" - "+this.state.selectedSlot+" - "+this.state.module);
+    console.log(AuthService.getCurrentRoleId());
+    console.log(moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
     axios.post(url, {
-      "user_code":this.state.user_code,
+      "donor_id": AuthService.getCurrentRoleId(),
       "date":moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"),
       "slot": this.state.selectedSlot,
       "module":this.state.module
-    })
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -153,16 +148,8 @@ class PrenotaDonazione extends Component {
                 content={
                   <form onSubmit={this.handleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
-                        {
-                          label: "Codice",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Codice Donatore",
-                          defaultValue: "Mike",
-                          onChange: this.handleChangeCode
-                        },
                         {
                           label: "Date",
                           type: "Date",
@@ -173,6 +160,7 @@ class PrenotaDonazione extends Component {
                         }
                       ]}
                     />
+                    <p>Upload MODULO:</p>
                     {this.dropdown()}
 
                     <input type="file" name="file" onChange={this.onChangeHandler}/>

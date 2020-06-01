@@ -5,12 +5,13 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
 
 import logo from "assets/img/logo.png";
+import AuthService from "services/auth.service.js";
 
 class Sidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user_role: "/admin",
+      user_role: "",
       width: window.innerWidth
     };
   }
@@ -23,15 +24,19 @@ class Sidebar extends Component {
   componentDidMount() {
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions.bind(this));
+    const role = AuthService.getCurrentRole();
+
+    this.setState({user_role : "/"+role});
+    console.log("/"+role);
   }
 
   changeToAnalista()
   {
-    this.setState({user_role : "/analista"});
+    this.setState({user_role : "/analyst"});
   }
   changeToDonatore()
   {
-    this.setState({user_role : "/donatore"});
+    this.setState({user_role : "/donor"});
   }
   changeToDottore()
   {
@@ -39,17 +44,20 @@ class Sidebar extends Component {
   }
   changeToImpiegato()
   {
-    this.setState({user_role : "/impiegato"});
+    this.setState({user_role : "/employee"});
   }
   changeToSedeAvis()
   {
-    this.setState({user_role : "/sede-avis"});
+    this.setState({user_role : "/facility"});
   }
   changeToAvis()
   {
     this.setState({user_role : "/avis"});
   }
-  
+  changeToNotAuth()
+  {
+    this.setState({user_role : "/notauth"});
+  }
 
   render() {
     const sidebarBackground = {
@@ -85,16 +93,18 @@ class Sidebar extends Component {
         <div className="sidebar-wrapper">
           <ul className="nav">
             {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
-            <Button type="button" onClick={() => this.changeToAnalista()}> Analista </Button>
-            <Button type="button" onClick={() => this.changeToDonatore()}> Donatore </Button>
-            <Button type="button" onClick={() => this.changeToDottore()}> Dottore </Button>
-            <Button type="button" onClick={() => this.changeToImpiegato()}> Impiegato </Button>
-            <Button type="button" onClick={() => this.changeToSedeAvis()}> Sede Avis </Button>
+            <Button type="button" onClick={() => this.changeToAnalista()}> Analyst </Button>
+            <Button type="button" onClick={() => this.changeToDonatore()}> Donor </Button>
+            <Button type="button" onClick={() => this.changeToDottore()}> Doctor </Button>
+            <Button type="button" onClick={() => this.changeToImpiegato()}> Employee </Button>
+            <Button type="button" onClick={() => this.changeToSedeAvis()}> Facility </Button>
             <Button type="button" onClick={() => this.changeToAvis()}>Avis </Button>
+            <Button type="button" onClick={() => this.changeToNotAuth()}>Not Auth </Button>
+
             {this.props.routes.map((prop, key) => {
               if (!prop.redirect && prop.layout=== this.state.user_role)
               {
-                
+                console.log(key);
                 return (
                   <li
                     className={

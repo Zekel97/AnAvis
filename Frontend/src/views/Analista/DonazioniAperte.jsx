@@ -4,7 +4,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "components/Card/Card.jsx";
 import { OpenDonArray } from "variables/Variables.jsx";
 import axios from "axios";
-
+import AuthService from "../../services/auth.service";
 class DonazioniAperte extends Component {
   state = {
     donations: []
@@ -12,22 +12,18 @@ class DonazioniAperte extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/donations/';
-  axios.get(url)
+  axios.get(url, {
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
-    console.log(data.data.donations);
-      if(data.data.donations.length == 0)
+      if(data.data.donations.length != 0)
       {
-        console.log("non ci sono donazioni aperte");
-      }
-      else{
-        console.log("e invece ci sono!");
         this.setState({ donations: data.data.donations })
       }
       })
   .catch(function (error) {
-    
-   
     console.log(error);
   })
 

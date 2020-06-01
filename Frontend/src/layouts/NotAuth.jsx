@@ -14,7 +14,7 @@ import routes from "routes.js";
 
 import image from "assets/img/sfondo.jpg";
 
-class Donatore extends Component {
+class NotAuth extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +47,7 @@ class Donatore extends Component {
   };
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/donatore") {
+      if (prop.layout === "/notauth") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -75,7 +75,7 @@ class Donatore extends Component {
         return routes[i].name;
       }
     }
-    return "Brand";
+    return "Not Auth";
   };
   handleImageClick = image => {
     this.setState({ image: image });
@@ -159,4 +159,4 @@ class Donatore extends Component {
   }
 }
 
-export default Donatore;
+export default NotAuth;

@@ -17,7 +17,7 @@ import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import moment from 'moment';
-
+import AuthService from "../../services/auth.service";
 moment.locale("it");
 
 
@@ -33,11 +33,13 @@ class RegistraDonatoreNP extends Component {
   componentDidMount() {
 
     const url = 'http://localhost:3000/api/v1/donors/';
-    axios.get(url)
+    axios.get(url,{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
     .then(response => response.data)
     .then((data) => {
         this.setState({ donors: data.data.donors })
-        console.log(this.state.donors)
         })
   
   }
@@ -68,7 +70,10 @@ class RegistraDonatoreNP extends Component {
     const url = 'http://localhost:3000/api/v1/reservations/';
 
         
-    axios.post(url, data)
+    axios.post(url, data,{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         console.log(res);
         console.log(res.data);

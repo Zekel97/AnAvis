@@ -4,6 +4,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "components/Card/Card.jsx";
 import { ResArray } from "variables/Variables.jsx";
 import axios from "axios";
+import AuthService from "../../services/auth.service";
 
 class ReservationList extends Component {
   state = {
@@ -13,16 +14,17 @@ class ReservationList extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/reservations/';
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
-    console.log(data.data.reservations);
       if(data.data.reservations.length == 0)
       {
         this.setState({ date: "none"});
       }
       else{
-        console.log("e invece");
         this.setState({ reservations: data.data.reservations })
         this.setState({ date: data.data.reservations[0].date})
       }

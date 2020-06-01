@@ -5,6 +5,7 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Card from "components/Card/Card.jsx";
 import { DocArray } from "variables/Variables.jsx";
 import axios from "axios";
+import authHeader from "services/auth-header.js";
 
 class Analista extends Component {
   state = {
@@ -21,18 +22,16 @@ class Analista extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/analysts/';
-  axios.get(url)
+  axios.get(url,{ headers: authHeader() })
   .then(response => response.data)
   .then((data) => {
       this.setState({ analists: data.data.analysts })
-      console.log(data.data.analysts)
       })
 
 }
 
 creaNuovoAnalista = event => {
     this.setState({create_analist : true});
-    //appare form creazione donor
 }
 
 setDeleteId = event => {
@@ -59,9 +58,7 @@ setEditId = event => {
     
     const url = 'http://localhost:3000/api/v1/analysts/'+event;
 
-    console.log(url);
-
-  axios.get(url)
+  axios.get(url,{ headers: authHeader() })
   .then(response => response.data)
   .then((data) => {
       this.setState({ analistView: data.data.analyst });
@@ -78,8 +75,6 @@ indietro = event => {
     console.log("Indietro");
     this.setState({create_analist : null});
     this.setState({edit_analist : null});
-
-    //resetto tutti i campi
 }
 
 editHandleSubmit = event => {
@@ -100,7 +95,7 @@ editHandleSubmit = event => {
       })
   }
 
-createHandleSubmit = event => {
+  createHandleSubmit = event => {
 
     const url = 'http://localhost:3000/api/v1/analysts/';
 
@@ -109,7 +104,7 @@ createHandleSubmit = event => {
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
       "working_days": this.state.working_days,
-    })
+    },{ headers: authHeader() })
       .then(res => {
         console.log(res);
         console.log(res.data);

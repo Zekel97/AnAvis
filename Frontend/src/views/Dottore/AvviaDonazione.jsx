@@ -16,6 +16,7 @@ import { ResArray } from "variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import moment from 'moment';
+import AuthService from "../../services/auth.service";
 
 moment.locale("it");
 
@@ -32,7 +33,10 @@ class AvviaDonazione extends Component {
   componentDidMount() {
 
     const url = 'http://localhost:3000/api/v1/reservations/';
-    axios.get(url)
+    axios.get(url,{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
     .then(response => response.data)
     .then((data) => {
       console.log(data.data.reservations);
@@ -41,7 +45,6 @@ class AvviaDonazione extends Component {
           this.setState({ date: "none"});
         }
         else{
-          console.log("e invece");
           this.setState({ reservations: data.data.reservations })
           this.setState({ date: data.data.reservations[0].date})
         }
@@ -67,7 +70,10 @@ class AvviaDonazione extends Component {
           const url = 'http://localhost:3000/api/v1/donations/'+event;
       
               
-          axios.post(url)
+          axios.post(url,{
+            headers: {
+              "x-access-token":AuthService.getCurrentToken()
+            }})
             .then(res => {
               console.log(res);
               console.log(res.data);

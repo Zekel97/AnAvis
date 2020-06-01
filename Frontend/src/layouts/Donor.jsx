@@ -14,7 +14,7 @@ import routes from "routes.js";
 
 import image from "assets/img/sfondo.jpg";
 
-class SedeAvis extends Component {
+class Donatore extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +47,7 @@ class SedeAvis extends Component {
   };
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/facility") {
+      if (prop.layout === "/donor") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -159,4 +159,4 @@ class SedeAvis extends Component {
   }
 }
 
-export default SedeAvis;
+export default Donatore;

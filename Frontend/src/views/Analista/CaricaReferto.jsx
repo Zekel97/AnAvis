@@ -19,7 +19,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import moment from 'moment';
 import DonazioniAperte from "./DonazioniAperte.jsx";
-
+import AuthService from "../../services/auth.service";
 moment.locale("it");
 
 function toLocalDate(date){
@@ -36,16 +36,15 @@ class CaricaReferto extends Component {
   componentDidMount() {
 
     const url = 'http://localhost:3000/api/v1/donations/';
-    axios.get(url)
+    axios.get(url,{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
     .then(response => response.data)
     .then((data) => {
       console.log(data.data.donations);
-        if(data.data.donations.length == 0)
+        if(data.data.donations.length != 0)
         {
-          console.log("non ci sono donazioni aperte");
-        }
-        else{
-          console.log("e invece ci sono!");
           this.setState({ donations: data.data.donations })
         }
         })
@@ -87,7 +86,10 @@ class CaricaReferto extends Component {
       
           const url = 'http://localhost:3000/api/v1/donations/'+this.state.donation_id;
 
-          axios.patch(url, data)
+          axios.patch(url, data,{
+            headers: {
+              "x-access-token":AuthService.getCurrentToken()
+            }})
             .then(res => {
               console.log(res);
               console.log(res.data);

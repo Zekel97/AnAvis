@@ -15,6 +15,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 
 import avatar from "assets/img/faces/face-3.jpg";
+import authService from "services/auth.service";
 
 
 class ReservationMaker extends Component {
@@ -55,7 +56,7 @@ class ReservationMaker extends Component {
 
     const data = new FormData();
     
-    data.append('user_code', this.state.user_code);
+    data.append('user_code', authService.getCurrentRoleId());
    data.append('date', this.state.date);
    data.append('slot', this.state.slot);
    data.append('module', this.state.module);

@@ -5,6 +5,7 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Card from "components/Card/Card.jsx";
 import { DocArray } from "variables/Variables.jsx";
 import axios from "axios";
+import AuthService from "../../services/auth.service";
 
 class Dottore extends Component {
   state = {
@@ -21,11 +22,13 @@ class Dottore extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/doctors/';
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
       this.setState({ doctors: data.data.doctors })
-      console.log(this.state.doctors)
       })
 
 }
@@ -59,7 +62,10 @@ setEditId = event => {
     
     const url = 'http://localhost:3000/api/v1/doctors/'+event;
 
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
       this.setState({ doctorView: data.data.doctor });
@@ -91,7 +97,10 @@ editHandleSubmit = event => {
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
       "working_days": this.state.working_days,
-    })
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         
         console.log(res.data);

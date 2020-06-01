@@ -4,6 +4,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "components/Card/Card.jsx";
 import { DocArray } from "variables/Variables.jsx";
 import axios from "axios";
+import AuthService from "../../services/auth.service";
 
 class DoctorsList extends Component {
   state = {
@@ -12,12 +13,13 @@ class DoctorsList extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/doctors/';
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token": AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
-      console.log(data.data.doctors);
       this.setState({ docs: data.data.doctors })
-      console.log(this.state.docs)
       })
 
 }

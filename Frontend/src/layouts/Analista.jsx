@@ -47,7 +47,7 @@ class Analista extends Component {
   };
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/analista") {
+      if (prop.layout === "/analyst") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -75,7 +75,7 @@ class Analista extends Component {
         return routes[i].name;
       }
     }
-    return "Brand";
+    return "Analyst";
   };
   handleImageClick = image => {
     this.setState({ image: image });

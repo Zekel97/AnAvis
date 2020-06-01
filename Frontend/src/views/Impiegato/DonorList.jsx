@@ -5,6 +5,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import Card from "components/Card/Card.jsx";
 import { DonArray } from "variables/Variables.jsx";
 import axios from "axios";
+import AuthService from "../../services/auth.service";
 
 class DonorList extends Component {
   state = {
@@ -15,11 +16,13 @@ class DonorList extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/donors/';
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
       this.setState({ donors: data.data.donors })
-      console.log(this.state.donors)
       })
 
 }

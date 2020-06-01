@@ -75,7 +75,7 @@ class Doctor extends Component {
         return routes[i].name;
       }
     }
-    return "Brand";
+    return "Doctor";
   };
   handleImageClick = image => {
     this.setState({ image: image });

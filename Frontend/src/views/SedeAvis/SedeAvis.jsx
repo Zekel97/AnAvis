@@ -5,6 +5,7 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Card from "components/Card/Card.jsx";
 import { SedeArray } from "variables/Variables.jsx";
 import axios from "axios";
+import AuthService from "../../services/auth.service";
 
 class SedeAvis extends Component {
   state = {
@@ -18,7 +19,10 @@ class SedeAvis extends Component {
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/facilities/';
-  axios.get(url)
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
       console.log(data.data);
@@ -39,7 +43,10 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/facilities/'+event;
 
-          axios.delete(url)
+          axios.delete(url,{
+            headers: {
+              "x-access-token":AuthService.getCurrentToken()
+            }})
             .then(res => {
               console.log(res);
               console.log(res.data);
