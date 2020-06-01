@@ -1,4 +1,5 @@
 const userService = require("./userService");
+const donorService = require("./donorService");
 const Facility = require("./../models/facilityModel");
 
 
@@ -6,6 +7,12 @@ exports.getFacilityById = async (id) => {
     const facility = await Facility.findById(id);
     return facility;
   };
+
+  
+  exports.getFacilitiesByUserId = async (id) => {
+    const facility = await Facility.findOne({"user_id":id});
+    return facility;
+}
 
 exports.getAllFacilities = async () => {
     const facility = await Facility.find();
@@ -37,3 +44,10 @@ exports.deleteFacility = async (facilityId) => {
     const deletedFacility = await Facility.findByIdAndDelete(facilityId);
     return deletedFacility;
 }
+
+exports.requireBloodByFacilities= async (facilityId, bloodType) => {
+
+ const donors = await donorService.getDonorsByFacilityAndBloodType(facilityId, bloodType);
+ const avaiableDonors = donors.filter(donorService.donorCanDonate);
+ return avaiableDonors;
+};

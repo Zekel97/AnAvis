@@ -1,6 +1,5 @@
 const catchAsync = require("./../utils/catchAsync");
 const FacilityService = require("./../services/facilityService")
-
 exports.getFacility = catchAsync(async (req, res) => {
   const falcilityId = req.params.id;
   const facility = await FacilityService.getFacilityById(falcilityId);
@@ -61,3 +60,15 @@ res.status(204).json({
 });
 
 });
+
+exports.requireBlood = catchAsync(async (req, res) => {
+  const donors = await FacilityService.requireBloodByFacilities(req.params.id, req.body.blood_type);
+  
+  res.status(200).json({
+    status: 'success',
+    data: { 
+      donors_contacted: donors.length
+    }
+  });
+  
+  });
