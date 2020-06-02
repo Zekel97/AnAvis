@@ -30,35 +30,6 @@ class Sidebar extends Component {
     console.log("/"+role);
   }
 
-  changeToAnalista()
-  {
-    this.setState({user_role : "/analyst"});
-  }
-  changeToDonatore()
-  {
-    this.setState({user_role : "/donor"});
-  }
-  changeToDottore()
-  {
-    this.setState({user_role : "/doctor"});
-  }
-  changeToImpiegato()
-  {
-    this.setState({user_role : "/employee"});
-  }
-  changeToSedeAvis()
-  {
-    this.setState({user_role : "/facility"});
-  }
-  changeToAvis()
-  {
-    this.setState({user_role : "/avis"});
-  }
-  changeToNotAuth()
-  {
-    this.setState({user_role : "/notauth"});
-  }
-
   render() {
     const sidebarBackground = {
       backgroundImage: "url(" + this.props.image + ")"
@@ -93,18 +64,10 @@ class Sidebar extends Component {
         <div className="sidebar-wrapper">
           <ul className="nav">
             {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
-            <Button type="button" onClick={() => this.changeToAnalista()}> Analyst </Button>
-            <Button type="button" onClick={() => this.changeToDonatore()}> Donor </Button>
-            <Button type="button" onClick={() => this.changeToDottore()}> Doctor </Button>
-            <Button type="button" onClick={() => this.changeToImpiegato()}> Employee </Button>
-            <Button type="button" onClick={() => this.changeToSedeAvis()}> Facility </Button>
-            <Button type="button" onClick={() => this.changeToAvis()}>Avis </Button>
-            <Button type="button" onClick={() => this.changeToNotAuth()}>Not Auth </Button>
 
             {this.props.routes.map((prop, key) => {
               if (!prop.redirect && prop.layout=== this.state.user_role)
               {
-                console.log(key);
                 return (
                   <li
                     className={

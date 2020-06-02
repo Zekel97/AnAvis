@@ -16,7 +16,10 @@ class Donatore extends Component {
     name: "",
     last_donation_date: "",
     blood_group: "",
-    facility_code:""
+    facility_code:"",
+    mail: "",
+    password: "",
+    user_id: ""
 }
 
 componentDidMount() {
@@ -46,7 +49,10 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/donors/'+event;
 
-          axios.delete(url)
+          axios.delete(url,{
+            headers: {
+              "x-access-token":AuthService.getCurrentToken()
+            }})
             .then(res => {
               console.log(res);
               console.log(res.data);
@@ -54,15 +60,16 @@ setDeleteId = event => {
             
         console.log("ELIMINATO ID : "+event);
       }
+      window.location.reload(false);
 }
 
 setEditId = event => {
-    console.log("modifica id");
+    console.log(event);
     
     this.setState({edit_donor : event});
     
     const url = 'http://localhost:3000/api/v1/donors/'+event;
-    console.log(url);
+    
   axios.get(url,{
     headers: {
       "x-access-token":AuthService.getCurrentToken()
@@ -70,6 +77,9 @@ setEditId = event => {
   .then(response => response.data)
   .then((data) => {
       this.setState({ donorView: data.data.donor })
+      this.setState({user_id: event});
+      this.setState({name: data.data.donor.name});
+      this.setState({blood_group: data.data.donor.blood_group});
       })
 
 }
@@ -85,23 +95,17 @@ indietro = event => {
 
 editHandleSubmit = event => {
 
-    const data = {
-      name: this.state.name,
-      last_donation_date: this.state.last_donation_date,
-      blood_group: this.state.blood_group,
-      facility_code: this.state.facility_code
-    };
+    console.log(event.target.value);
+    const url = 'http://localhost:3000/api/v1/donors/'+this.state.user_id;
 
-    const url = 'http://localhost:3000/api/v1/donors/';
-
-    console.log(data);
-
+    console.log(this.state.blood_group);
     axios.patch(url, {
       "name": this.state.name,
-      "last_donation_date": this.state.last_donation_date,
-      "blood_group": this.state.blood_group, 
-      "facility_code": this.state.facility_code,
-    })
+      "blood_group": this.state.blood_group
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -114,27 +118,24 @@ editHandleSubmit = event => {
 createHandleSubmit = event => {
     //CREA Donatore
 
-    const data = {
-      name: this.state.name,
-      last_donation_date: this.state.last_donation_date,
-      blood_group: this.state.blood_group,
-      facility_code: this.state.facility_code
-    };
-
     const url = 'http://localhost:3000/api/v1/donors/';
-
-    console.log(data);
 
     axios.post(url, {
       "name": this.state.name,
-      "last_donation_date": this.state.last_donation_date,
       "blood_group": this.state.blood_group, 
-      "facility_code": this.state.facility_code,
-    })
+      "facility_code": AuthService.getCurrentFacilityCode(),
+      "mail": this.state.mail,
+      "password": this.state.password
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         console.log(res);
         console.log(res.data);
       })
+
+      window.location.reload(false);
   }
 
   handleChangeName = event => {
@@ -149,7 +150,12 @@ createHandleSubmit = event => {
   handleChangeFacility = event => {
     this.setState({facility_code : event.target.value});
   }
-
+  handleChangeMail = event => {
+    this.setState({mail : event.target.value});
+  }
+  handleChangePassword = event => {
+    this.setState({password : event.target.value});
+  }
 
   render() {
     return (
@@ -231,7 +237,7 @@ createHandleSubmit = event => {
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Nome Donatore",
@@ -239,18 +245,11 @@ createHandleSubmit = event => {
                           bsClass: "form-control",
                           defaultValue: this.state.donorView.name,
                           onChange: this.handleChangeName
-                        },
-                        {
-                          label: "Last Donation Date",
-                          type: "text",
-                          bsClass: "form-control",
-                          defaultValue: this.state.donorView.last_donation_date,
-                          onChange: this.handleChangeLDD
                         }
                       ]}
                     />
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Blood Group",
@@ -258,13 +257,6 @@ createHandleSubmit = event => {
                           bsClass: "form-control",
                           defaultValue: this.state.donorView.blood_group,
                           onChange: this.handleChangeBloodG
-                        },
-                        {
-                          label: "Facility Code",
-                          type: "text",
-                          bsClass: "form-control",
-                          defaultValue: this.state.donorView.facility_code,
-                          onChange: this.handleChangeFacility
                         }
                       ]}
                     />
@@ -291,40 +283,36 @@ createHandleSubmit = event => {
                 content={
                   <form onSubmit={this.createHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6", "col-md-6", "col-md-6"]}
                       properties={[
                         {
                           label: "Nome Donatore",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Nome Donatore",
                           onChange: this.handleChangeName
                         },
                         {
-                          label: "Last Donation Date",
+                          label: "Mail",
+                          type: "email",
+                          bsClass: "form-control",
+                          onChange: this.handleChangeMail
+                        },
+                        {
+                          label: "Password",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Last Donation Date",
-                          onChange: this.handleChangeLDD
+                          onChange: this.handleChangePassword
                         }
                       ]}
                     />
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Blood Group",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Blood Group",
                           onChange: this.handleChangeBloodG
-                        },
-                        {
-                          label: "Facility Code",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Facility Code",
-                          onChange: this.handleChangeFacility
                         }
                       ]}
                     />

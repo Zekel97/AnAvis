@@ -5,7 +5,7 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Card from "components/Card/Card.jsx";
 import { DocArray } from "variables/Variables.jsx";
 import axios from "axios";
-import authHeader from "services/auth-header.js";
+import AuthService from "../../services/auth.service";
 
 class Analista extends Component {
   state = {
@@ -16,15 +16,22 @@ class Analista extends Component {
     name:"",
     start_hour:"",
     end_hour:"",
-    working_days:""
+    working_days:"",
+    mail: "",
+    password: "",
+    user_id: ""
 }
 
 componentDidMount() {
 
   const url = 'http://localhost:3000/api/v1/analysts/';
-  axios.get(url,{ headers: authHeader() })
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
+    console.log(data.data);
       this.setState({ analists: data.data.analysts })
       })
 
@@ -41,7 +48,10 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/analysts/'+event;
 
-          axios.delete(url)
+          axios.delete(url,{
+            headers: {
+              "x-access-token":AuthService.getCurrentToken()
+            }})
             .then(res => {
               console.log(res);
               console.log(res.data);
@@ -49,6 +59,8 @@ setDeleteId = event => {
             
         console.log("ELIMINATO ID : "+event);
       }
+
+      window.location.reload(false);
 }
 
 setEditId = event => {
@@ -58,7 +70,10 @@ setEditId = event => {
     
     const url = 'http://localhost:3000/api/v1/analysts/'+event;
 
-  axios.get(url,{ headers: authHeader() })
+  axios.get(url,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
   .then(response => response.data)
   .then((data) => {
       this.setState({ analistView: data.data.analyst });
@@ -88,7 +103,11 @@ editHandleSubmit = event => {
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
       "working_days": this.state.working_days,
-    })
+      
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -104,7 +123,12 @@ editHandleSubmit = event => {
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
       "working_days": this.state.working_days,
-    },{ headers: authHeader() })
+      "mail": this.state.mail,
+      "password": this.state.password
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -122,6 +146,12 @@ editHandleSubmit = event => {
   }
   handleChangeEndHour = event => {
     this.setState({end_hour : event.target.value});
+  }
+  handleChangeMail = event => {
+    this.setState({mail : event.target.value});
+  }
+  handleChangePassword = event => {
+    this.setState({password : event.target.value});
   }
   
   handleChange = event => {
@@ -222,7 +252,7 @@ editHandleSubmit = event => {
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Nome Analista",
@@ -230,18 +260,11 @@ editHandleSubmit = event => {
                           bsClass: "form-control",
                           defaultValue: this.state.analistView.name,
                           onChange: this.handleChangeName
-                        },
-                        {
-                          label: "Start Hour",
-                          type: "text",
-                          bsClass: "form-control",
-                          defaultValue: this.state.analistView.start_hour,
-                          onChange: this.handleChangeStartHour
                         }
                       ]}
                     />
                     <FormInputs
-                      ncols={["col-md-6"]}
+                      ncols={["col-md-6", "col-md-6"]}
                       properties={[
                         {
                           label: "End Hour",
@@ -249,6 +272,13 @@ editHandleSubmit = event => {
                           bsClass: "form-control",
                           defaultValue: this.state.analistView.end_hour,
                           onChange: this.handleChangeEndHour
+                        },
+                        {
+                          label: "Start Hour",
+                          type: "text",
+                          bsClass: "form-control",
+                          defaultValue: this.state.analistView.start_hour,
+                          onChange: this.handleChangeStartHour
                         }
                       ]}
 
@@ -285,37 +315,49 @@ editHandleSubmit = event => {
                 content={
                   <form onSubmit={this.createHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6", "col-md-6", "col-md-6"]}
                       properties={[
                         {
                           label: "Nome Analista",
                           type: "text",
                           bsClass: "form-control",
-                          defaultValue: "Mike",
+                          defaultValue: this.state.analistView.name,
                           onChange: this.handleChangeName
                         },
                         {
-                          label: "Start Hour",
+                          label: "Mail",
+                          type: "email",
+                          bsClass: "form-control",
+                          defaultValue: this.state.analistView.mail,
+                          onChange: this.handleChangeMail
+                        },
+                        {
+                          label: "Password",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Start Hour",
-                          defaultValue: "8:00",
-                          onChange: this.handleChangeStartHour
+                          onChange: this.handleChangePassword
                         }
                       ]}
                     />
                     <FormInputs
-                      ncols={["col-md-6"]}
+                      ncols={["col-md-6", "col-md-6"]}
                       properties={[
+                        {
+                          label: "Start Hour",
+                          type: "text",
+                          bsClass: "form-control",
+                          defaultValue: this.state.analistView.start_hour,
+                          onChange: this.handleChangeStartHour
+                        },
                         {
                           label: "End Hour",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "End Hour",
-                          defaultValue: "12:00",
+                          defaultValue: this.state.analistView.end_hour,
                           onChange: this.handleChangeEndHour
                         }
                       ]}
+
                     />
 
 <select multiple={true} value={this.props.arrayOfOptionValues} onChange={this.handleChange}>

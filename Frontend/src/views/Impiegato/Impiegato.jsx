@@ -16,7 +16,10 @@ class Impiegato extends Component {
     name:"",
     start_hour:"",
     end_hour:"",
-    working_days:""
+    working_days:"",
+    mail: "",
+    password: "",
+    user_id: ""
 }
 
 componentDidMount() {
@@ -56,6 +59,7 @@ setDeleteId = event => {
             
         console.log("ELIMINATO ID : "+event);
       }
+      window.location.reload(false);
 }
 
 setEditId = event => {
@@ -91,12 +95,6 @@ indietro = event => {
 
 editHandleSubmit = event => {
 
-    const data = {
-      name: this.state.name,
-      start_hour: this.state.start_hour,
-      end_hour: this.state.end_hour,
-      working_days: this.state.working_days
-    };
 
     const url = 'http://localhost:3000/api/v1/employees/'+this.state.edit_impiegato;
     console.log(url);
@@ -115,6 +113,7 @@ editHandleSubmit = event => {
         console.log(res);
         console.log(res.data);
       })
+      window.location.reload(false);
   }
 
 createHandleSubmit = event => {
@@ -127,6 +126,9 @@ createHandleSubmit = event => {
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
       "working_days": this.state.working_days,
+      "facility_code": AuthService.getCurrentFacilityCode(),
+      "mail": this.state.mail,
+      "password": this.state.password
     },{
       headers: {
         "x-access-token":AuthService.getCurrentToken()
@@ -150,6 +152,12 @@ handleChangeStartHour = event => {
 handleChangeEndHour = event => {
   this.setState({end_hour : event.target.value});
 }
+  handleChangeMail = event => {
+    this.setState({mail : event.target.value});
+  }
+  handleChangePassword = event => {
+    this.setState({password : event.target.value});
+  }
 
 handleChange = event => {
   var options = event.target.options;
@@ -248,7 +256,7 @@ handleChange = event => {
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                    <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Nome Impiegato",
@@ -256,19 +264,19 @@ handleChange = event => {
                           bsClass: "form-control",
                           defaultValue: this.state.impiegatoView.name,
                           onChange: this.handleChangeName
-                        },
+                        }
+                      ]}
+                    />
+                    <FormInputs
+                      ncols={["col-md-6", "col-md-6"]}
+                      properties={[
                         {
                           label: "Start Hour",
                           type: "text",
                           bsClass: "form-control",
                           defaultValue: this.state.impiegatoView.start_hour,
                           onChange: this.handleChangeStartHour
-                        }
-                      ]}
-                    />
-                    <FormInputs
-                      ncols={["col-md-6"]}
-                      properties={[
+                        },
                         {
                           label: "End Hour",
                           type: "text",
@@ -310,7 +318,7 @@ handleChange = event => {
                 content={
                   <form onSubmit={this.createHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6", "col-md-6", "col-md-6"]}
                       properties={[
                         {
                           label: "Nome Impiegato",
@@ -320,18 +328,31 @@ handleChange = event => {
                           onChange: this.handleChangeName
                         },
                         {
+                          label: "Mail",
+                          type: "email",
+                          bsClass: "form-control",
+                          onChange: this.handleChangeMail
+                        },
+                        {
+                          label: "Password",
+                          type: "text",
+                          bsClass: "form-control",
+                          onChange: this.handleChangePassword
+                        }
+
+                      ]}
+                    />
+                    <FormInputs
+                      ncols={["col-md-6","col-md-6"]}
+                      properties={[
+                        {
                           label: "Start Hour",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Start Hour",
                           defaultValue: "8:00",
                           onChange: this.handleChangeStartHour
-                        }
-                      ]}
-                    />
-                    <FormInputs
-                      ncols={["col-md-6"]}
-                      properties={[
+                        },
                         {
                           label: "End Hour",
                           type: "text",

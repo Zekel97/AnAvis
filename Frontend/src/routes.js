@@ -19,20 +19,12 @@ import Dottore from "views/Dottore/Dottore.jsx";
 import Impiegato from "views/Impiegato/Impiegato.jsx";
 import SedeAvis from "views/SedeAvis/SedeAvis.jsx";
 
-//Madonna me tocca suddividere tutti i layout in singoli.
-
 const dashboardRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
     component: Dashboard,
-    layout: "/facility",
-    layout: "/employee",
-    layout: "/avis",
-    layout: "/donor",
-    layout: "/analyst",
-    layout: "/doctor",
     layout: "/notauth"
   },
   {
@@ -54,7 +46,13 @@ const dashboardRoutes = [
     name: "User Page",
     icon: "pe-7s-graph",
     component: UserPage,
-    layout: "/avis",
+    layout: "/avis"
+  },
+  {
+    path: "/userpage",
+    name: "User Page",
+    icon: "pe-7s-graph",
+    component: UserPage,
     layout: "/donor"
   },
   {
@@ -97,7 +95,7 @@ const dashboardRoutes = [
     name: "Impiegato",
     icon: "pe-7s-next-2",
     component: Impiegato,
-    layout: "/sede-avis"
+    layout: "/facility"
   },
   {
     path: "/sede-avis-crud",
@@ -168,10 +166,40 @@ const dashboardRoutes = [
     icon: "pe-7s-graph",
     component: Logout,
     layout: "/facility",
-    layout: "/employee",
-    layout: "/avis",
-    layout: "/donor",
-    layout: "/analyst",
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    icon: "pe-7s-graph",
+    component: Logout,
+    layout: "/employee"
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    icon: "pe-7s-graph",
+    component: Logout,
+    layout: "/avis"
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    icon: "pe-7s-graph",
+    component: Logout,
+    layout: "/donor"
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    icon: "pe-7s-graph",
+    component: Logout,
+    layout: "/analyst"
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    icon: "pe-7s-graph",
+    component: Logout,
     layout: "/doctor"
   }
 ];

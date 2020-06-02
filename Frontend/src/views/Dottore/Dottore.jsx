@@ -16,7 +16,9 @@ class Dottore extends Component {
     name:"",
     start_hour:"",
     end_hour:"",
-    working_days:""
+    working_days:"",
+    mail: "",
+    password: ""
 }
 
 componentDidMount() {
@@ -45,7 +47,10 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/doctors/'+event;
 
-          axios.delete(url)
+          axios.delete(url,{
+            headers: {
+              "x-access-token":AuthService.getCurrentToken()
+            }})
             .then(res => {
               console.log(res);
               console.log(res.data);
@@ -53,6 +58,8 @@ setDeleteId = event => {
             
         console.log("ELIMINATO ID : "+event);
       }
+
+      window.location.reload(false);
 }
 
 setEditId = event => {
@@ -74,6 +81,7 @@ setEditId = event => {
       this.setState({start_hour : this.state.doctorView.start_hour});
       this.setState({end_hour : this.state.doctorView.end_hour});
       this.setState({working_days : this.state.doctorView.working_days});
+      this.setState({mail: this.state.doctorView.mail});
       console.log(this.state.doctorView)
       })
 
@@ -96,7 +104,7 @@ editHandleSubmit = event => {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
-      "working_days": this.state.working_days,
+      "working_days": this.state.working_days
     },{
       headers: {
         "x-access-token":AuthService.getCurrentToken()
@@ -112,14 +120,17 @@ createHandleSubmit = event => {
 
     const url = 'http://localhost:3000/api/v1/doctors/';
 
-
-
     axios.post(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
       "working_days": this.state.working_days,
-    })
+      "mail": this.state.mail,
+      "password": this.state.password
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
         console.log(res);
         console.log(res.data);
@@ -137,6 +148,12 @@ createHandleSubmit = event => {
   }
   handleChangeEndHour = event => {
     this.setState({end_hour : event.target.value});
+  }
+  handleChangeMail = event => {
+    this.setState({mail : event.target.value});
+  }
+  handleChangePassword = event => {
+    this.setState({password : event.target.value});
   }
   handleChange = event => {
     var options = event.target.options;
@@ -231,7 +248,7 @@ createHandleSubmit = event => {
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Nome Dottore",
@@ -239,19 +256,19 @@ createHandleSubmit = event => {
                           bsClass: "form-control",
                           defaultValue: this.state.doctorView.name,
                           onChange: this.handleChangeName
-                        },
+                        }
+                      ]}
+                    />
+                    <FormInputs
+                      ncols={["col-md-6", "col-md-6"]}
+                      properties={[
                         {
                           label: "Start Hour",
                           type: "text",
                           bsClass: "form-control",
                           defaultValue: this.state.doctorView.start_hour,
                           onChange: this.handleChangeStartHour
-                        }
-                      ]}
-                    />
-                    <FormInputs
-                      ncols={["col-md-6"]}
-                      properties={[
+                        },
                         {
                           label: "End Hour",
                           type: "text",
@@ -294,22 +311,25 @@ createHandleSubmit = event => {
                 content={
                   <form onSubmit={this.createHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      ncols={["col-md-6", "col-md-6", "col-md-6"]}
                       properties={[
                         {
                           label: "Nome Dottore",
                           type: "text",
                           bsClass: "form-control",
-                          defaultValue: "Mike",
                           onChange: this.handleChangeName
                         },
                         {
-                          label: "Start Hour",
+                          label: "Mail",
+                          type: "email",
+                          bsClass: "form-control",
+                          onChange: this.handleChangeMail
+                        },
+                        {
+                          label: "Password",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Start Hour",
-                          defaultValue: "8:00",
-                          onChange: this.handleChangeStartHour
+                          onChange: this.handleChangePassword
                         }
                       ]}
                     />
@@ -317,11 +337,15 @@ createHandleSubmit = event => {
                       ncols={["col-md-6", "col-md-6"]}
                       properties={[
                         {
+                          label: "Start Hour",
+                          type: "text",
+                          bsClass: "form-control",
+                          onChange: this.handleChangeStartHour
+                        },
+                        {
                           label: "End Hour",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "End Hour",
-                          defaultValue: "12:00",
                           onChange: this.handleChangeEndHour
                         }
                       ]}

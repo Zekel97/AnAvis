@@ -113,18 +113,22 @@ class PrenotaDonazione extends Component {
 
   handleSubmit = event => {
 
+    const data = new FormData();
+
+    data.append('donor_id',AuthService.getCurrentRoleId());
+    data.append('module', this.state.module);
+    data.append('date',moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
+    data.append('slot',this.state.selectedSlot);
+    
+    console.log(data);
+
     const url = 'http://localhost:3000/api/v1/reservations/';
     console.log(AuthService.getCurrentRoleId());
     console.log(moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
-    axios.post(url, {
-      "donor_id": AuthService.getCurrentRoleId(),
-      "date":moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"),
-      "slot": this.state.selectedSlot,
-      "module":this.state.module
-    },{
-      headers: {
-        "x-access-token":AuthService.getCurrentToken()
-      }})
+    axios.post(url, data,{
+    headers: {
+      "x-access-token":AuthService.getCurrentToken()
+    }})
       .then(res => {
         console.log(res);
         console.log(res.data);

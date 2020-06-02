@@ -66,13 +66,13 @@ class AvviaDonazione extends Component {
           const data = new FormData();
       
           data.append('reservation_id',event);
-      
+          console.log(event);
           const url = 'http://localhost:3000/api/v1/donations/'+event;
-      
+        console.log(AuthService.getCurrentToken());
               
-          axios.post(url,{
+          axios.post(url,{},{
             headers: {
-              "x-access-token":AuthService.getCurrentToken()
+              "x-access-token": AuthService.getCurrentToken()
             }})
             .then(res => {
               console.log(res);
@@ -119,7 +119,7 @@ class AvviaDonazione extends Component {
                             </td>
                             <td>
                               {
-                                prop.user_code
+                                prop._id
                               }
                             </td>
                             <td>

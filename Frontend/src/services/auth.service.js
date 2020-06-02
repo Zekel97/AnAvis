@@ -5,8 +5,6 @@ const API_URL = "http://localhost:3000/api/v1/auth";
 class AuthService {
 
   login(mail, password) {
-    console.log(mail+" - "+password);
-
     return axios
       .post(API_URL+"/login", {
         "mail":mail,
@@ -14,9 +12,7 @@ class AuthService {
       })
       .then(response => {
         if (response.data.token) {
-            const user = jwt(response.data.token); // decode your token here
-            console.log(response.data.token);
-            console.log(user);            
+            const user = jwt(response.data.token); // decode your token here      
             localStorage.setItem("role",user.role[0]);
             localStorage.setItem("id",user.id);
             localStorage.setItem("token", response.data.token);
@@ -37,8 +33,17 @@ class AuthService {
       headers: {
         "x-access-token": this.getCurrentToken()
       }}).then(response => {
-        console.log(JSON.stringify(response.data.facility_code));
-        localStorage.setItem("facility_code",JSON.stringify(response.data.facility_code));
+        console.log(JSON.stringify(response.data));
+        if(JSON.stringify(response.data.role[0]) === "facility")
+        {
+          localStorage.setItem("facility_code",JSON.stringify(response.data._id));
+        }
+        else
+        {
+          localStorage.setItem("facility_code",JSON.stringify(response.data.facility_code));
+        }
+        
+
         localStorage.setItem("roleid",JSON.stringify(response.data._id));
       })
   }
@@ -72,22 +77,21 @@ class AuthService {
   getCurrentToken()
   {
     var token = localStorage.getItem('token');
-    console.log(token.replace(/['"]+/g, ''));
-    console.log(localStorage.getItem('token'));
+    
     return token.replace(/['"]+/g, '');
   }
 
   getCurrentRoleId()
   {
     var role = localStorage.getItem('roleid');
-    console.log(role.replace(/['"]+/g, ''));
+    
     return role.replace(/['"]+/g, '');
   }
 
   getCurrentFacilityCode()
   {
     var facility = localStorage.getItem('facility_code');
-    console.log(facility.replace(/['"]+/g, ''));
+    
     return facility.replace(/['"]+/g, '');
   }
 

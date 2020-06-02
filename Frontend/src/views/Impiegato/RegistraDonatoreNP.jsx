@@ -59,17 +59,16 @@ class RegistraDonatoreNP extends Component {
     }
 
   handleSubmit = event => {
-    event.preventDefault();
-    console.log(this.state.selectedSlot);
-    console.log(DonorList.getSelectedDonor());
+
     const data = new FormData();
 
-    data.append('user_code', this.state.user_code);
+    data.append('donor_id', this.state.user_code);
     data.append('module', this.state.module);
+    
+    console.log(data);
 
     const url = 'http://localhost:3000/api/v1/reservations/';
 
-        
     axios.post(url, data,{
       headers: {
         "x-access-token":AuthService.getCurrentToken()
