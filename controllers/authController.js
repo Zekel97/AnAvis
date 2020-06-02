@@ -29,7 +29,6 @@ exports.me = catchAsync(async (req, res, next) => {
     
     jwt.verify(token, process.env.JWY_SECRET_KEY,async function(err, decoded) {
       //if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
-      console.log(decoded.role);
       let user;
       if(decoded.role[0]==="employee" || "doctor" || "analyst") {user = await avisWorkerService.getAvisWorkerByUserId(decoded.id);}
       if(decoded.role[0]==="donor") {user = await donorService.getDonorByUserId(decoded.id);}

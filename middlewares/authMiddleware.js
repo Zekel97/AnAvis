@@ -10,7 +10,6 @@ const facilityService = require('./../services/facilityService');
  */
 exports.checkAuth = function (req,res,next){
     const token = req.headers['x-access-token'];
-    console.log(token);
   if (!token)  res.status(401).send({ auth: false, message: 'No token provided.' });
     
    jwt.verify(token, process.env.JWY_SECRET_KEY, async function(err, decoded) {

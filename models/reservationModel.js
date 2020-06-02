@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 var ReservationSchema = new Schema({
   accepted_by: {
     type: String,
-    required: "Inserire id del dottore che ha accettato la prenotazione",
   },
   donor_id:{
     type: String,

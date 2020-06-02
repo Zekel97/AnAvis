@@ -31,7 +31,6 @@ exports.getDoctor = catchAsync(async (req, res) => {
 
 exports.createDoctor = catchAsync(async (req, res,next) => {
   //mettere controllo campi obbligatori
-  
   const facility = await facilityService.getFacilitiesByUserId(req.jwt_user.id);
   req.body.facility_code = facility._id;
 
