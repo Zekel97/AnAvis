@@ -9,7 +9,7 @@ const analystsRoute = require("./routes/analystRoute.js");
 const employeesRoute = require("./routes/employeeRoute.js");
 const facilitiesRoute = require("./routes/facilityRoute.js");
 const usersRoute = require("./routes/userRoute.js");
-
+const avisRoute = require("./routes/nationalAvisRoute.js");
 const cors = require("cors");
 
 
@@ -29,6 +29,7 @@ app.use("/api/v1/doctors", doctorsRoute);
 app.use("/api/v1/donors", donorsRoute);
 app.use("/api/v1/analysts", analystsRoute);
 app.use("/api/v1/facilities", facilitiesRoute);
+app.use("/api/v1/avis", avisRoute);
 app.use("/api/v1/employees", employeesRoute);
 app.use("/api/v1/users", usersRoute);
 app.use("/api/v1/auth", authRoute);

@@ -16,4 +16,7 @@ router
     .patch(authMiddleware.checkAuth,donorController.updateDonor)
     .delete(authMiddleware.checkAuth,donorController.deleteDonor);
 
+router.route("/:id/donations").get(authMiddleware.checkAuth,donorController.getOldDonations);
+
+router.route("/:id/reservations").get(authMiddleware.checkAuth,donorController.getActiveReservations);
 module.exports = router;

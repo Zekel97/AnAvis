@@ -1,6 +1,11 @@
 const AvisWorker = require("./../models/avisWorkerModel");
 const userService = require("./userService");
 
+exports.getAllAvisWorker = async () => {
+    const avisWorker = await AvisWorker.find();
+    return avisWorker;
+  };
+
 exports.getAvisWorkerById = async (id) => {
     const avisWorker = await AvisWorker.findById(id);
     return avisWorker;

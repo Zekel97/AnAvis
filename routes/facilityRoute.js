@@ -20,5 +20,4 @@ router
   .route("/:id/require_blood")
   .post(authMiddleware.checkAuth,facilityController.requireBlood);
 
-
 module.exports = router;

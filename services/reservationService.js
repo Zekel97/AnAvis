@@ -11,6 +11,16 @@ exports.findReservationById = async(reservationId) => {
   return reservation;
 }
 
+exports.getReservationsByDonor = async(donorId)=> {
+  const reservations = await Reservation.find({"donor_id":donorId});
+  return reservations;
+}
+
+exports.findAllReservations = async()=>{
+  const reservations = await Reservation.find();
+  return reservations;
+}
+
 exports.findReservationsByDate = async(date) => {
   const reservations = await Reservation.find({date:date});
   return reservations;

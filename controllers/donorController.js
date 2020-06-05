@@ -1,7 +1,10 @@
 const catchAsync = require("./../utils/catchAsync");
 const DonorService = require("./../services/donorService");
 const avisWorkerService = require("./../services/avisWorkerService");
-  
+const donationService = require("./../services/donationService");
+const reservationService = require("./../services/reservationService");
+
+
 exports.getAllDonors = catchAsync(async (req, res) => {
   const allDonors = await DonorService.getDonorsByFacility(req.body.facility_code);
   
@@ -67,7 +70,35 @@ exports.getDonor = catchAsync(async (req, res) => {
 });
 
 
+exports.getActiveReservations = catchAsync(async (req, res, next) => {
 
+  const reservation = await reservationService.getReservationsByDonor(req.params.id);
+  
+  if(!reservation){ return next(new AppError("No todo found with that ID",404))}
+  
+  res.status(200).json({
+    status: "success",
+    data: {
+      reservation
+    }
+  });
+  
+});
+
+exports.getOldDonations = catchAsync(async (req, res, next) => {
+
+  const donations = await donationService.getDonationsByDonor(req.params.id);
+  
+  if(!donations){ return next(new AppError("No todo found with that ID",404))}
+  
+  res.status(200).json({
+    status: "success",
+    data: {
+      donations
+    }
+  });
+  
+});
 
 
 

@@ -11,10 +11,21 @@ exports.getOpenDonations = async () => {
   return openDonations;
 };
 
+exports.getClosedDonations =  async () => {
+  const closedDonations = await Donation.find({status:"Concluded"});
+  return closedDonations;
+};
+
 exports.getOpenDonationsInFacility = async (facility) => {
   const openDonations = await Donation.find({status:"Processing", facility_code:facility});
   return openDonations;
 };
+
+exports.getDonationsByDonor = async (donor) => {
+  const donations = await Donation.find({donor_id:donor});
+  return donations;
+}
+
 
 exports.getDonation = async (donationId) => {
   const donation = await Donation.findById(donationId);

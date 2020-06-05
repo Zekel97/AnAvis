@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 exports.login = catchAsync(async (req, res, next) => {
-
+  console.log(bcrypt.hashSync("administrator", 8));
     const user = await userService.findUserByMail(req.body.mail);
     if(!user) return res.status(404).json({auth:false, message:"User not found"});
 
