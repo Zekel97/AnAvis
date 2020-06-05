@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 exports.login = catchAsync(async (req, res, next) => {
-  console.log(bcrypt.hashSync("administrator", 8));
     const user = await userService.findUserByMail(req.body.mail);
     if(!user) return res.status(404).json({auth:false, message:"User not found"});
 
@@ -32,7 +31,7 @@ exports.me = catchAsync(async (req, res, next) => {
       let user;
       if(decoded.role[0]==="employee" || "doctor" || "analyst") {user = await avisWorkerService.getAvisWorkerByUserId(decoded.id);}
       if(decoded.role[0]==="donor") {user = await donorService.getDonorByUserId(decoded.id);}
-      if(decoded.role[0]==="facility") {user = await facilityService.getFacilitiesByUserId(decoded.id);}
+      if(decoded.role[0]==="facility"|| "avis") {user = await facilityService.getFacilitiesByUserId(decoded.id);}
       
       if(!user) {return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });}
       else {

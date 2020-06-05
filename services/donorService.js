@@ -24,6 +24,11 @@ exports.getAllDonors = async () => {
     return donor;
 }
 
+exports.getAllPopulatedDonors = async () => {
+  const donor = await Donor.find().populate("user_id");
+  return donor;
+}
+
 exports.createDonor = async (donorData) => {
 
     //Mettere tutti i controlli affinchè crei correttamente il donor
@@ -60,6 +65,5 @@ exports.getDonorsByFacilityAndBloodType = async (facility, bloodType)=>{
 
 exports.donorCanDonate = (donor) => {
   const last_donation = donor.last_donation_date;
-  console.log((moment(last_donation).add(3, "M").isAfter(moment())));
   return !(moment(last_donation).add(3, "M").isAfter(moment()));
 }

@@ -30,9 +30,7 @@ exports.createDonor = catchAsync(async (req, res) => {
 });
   
 exports.updateDonor = catchAsync(async (req, res, next) => {
-  
-  console.log(req.params.id);
-  console.log(req.body);
+
   const donor = await DonorService.updateDonor(req.params.id, req.body);
   
   if(!donor){ return next(new AppError("No todo found with that ID",404))}

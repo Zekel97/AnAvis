@@ -1,4 +1,5 @@
 var bcrypt = require('bcryptjs');
+
 const catchAsync = require("./../utils/catchAsync");
 
 const User = require('./../models/userModel');
@@ -22,5 +23,13 @@ exports.createUser = async (mail, password, role) => {
 
 exports.deleteUser = async(userId) => {
     const user =await User.findByIdAndDelete(userId);
+    return user;
+}
+
+exports.updateUser = async(userId, userData) => {
+    const user = await User.findByIdAndUpdate(userId, userData, {
+        new: true,
+        runValidators: true
+      });
     return user;
 }

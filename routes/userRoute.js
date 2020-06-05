@@ -7,8 +7,15 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authMiddleware.checkAuth, authMiddleware.allowOnlyRole("facility"),userController.getAllUser);
+  .get(authMiddleware.checkAuth, userController.getAllUser);
 
+router
+  .route("/:id")
+  .patch(authMiddleware.checkAuth, userController.updateUser);
+
+router
+  .route("/:id/reset")
+  .patch(authMiddleware.checkAuth, userController.resetPassword);
   //.get(authMiddleware.allowOnlyRole("doctor"), userController.getAllUser);
 
   module.exports = router;

@@ -23,8 +23,8 @@ var DonorSchema = new Schema({
     required: "Codice della Sede alla quale il donatore appartiene",
   },
   user_id:{
-    type:String,
-    unique: true,
+    type:Schema.Types.ObjectId,
+    ref: "User",
     required: "E' necessario associare un lavoratore avis ad un'utente."
   },
   role:{ 
