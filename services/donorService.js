@@ -10,7 +10,7 @@ exports.getDonorById = async (id) => {
   };
 
   exports.getDonorByUserId = async (id) => {
-    const donor = await Donor.findOne({"user_id": id});
+    const donor = await Donor.findOne({"user_id":id});
     return donor;
   };
 
