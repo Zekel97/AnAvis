@@ -26,6 +26,12 @@ exports.deleteUser = async(userId) => {
     return user;
 }
 
+exports.getUser = async(userId) => {
+    const user =await User.findById(userId);
+    return user;
+}
+
+
 exports.updateUser = async(userId, userData) => {
     const user = await User.findByIdAndUpdate(userId, userData, {
         new: true,

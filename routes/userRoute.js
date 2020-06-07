@@ -11,6 +11,7 @@ router
 
 router
   .route("/:id")
+  .get(authMiddleware.checkAuth, userController.getUser)
   .patch(authMiddleware.checkAuth, userController.updateUser);
 
 router

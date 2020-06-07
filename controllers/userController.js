@@ -31,6 +31,21 @@ exports.getAllUser = catchAsync(async (req, res) => {
   
   });
 
+  exports.getUser = catchAsync(async (req, res, next) => {
+
+    const user = await UserService.getUser(req.params.id);
+  
+    if(!user){ return next(new AppError("No user found with that ID",404))}
+  
+    res.status(200).json({
+      status: "success",
+      data: {
+        user
+      }
+    });
+  
+  });
+
   exports.resetPassword = catchAsync(async (req, res, next) => {
     //generate a random password, for now the new password will be new_password
 
