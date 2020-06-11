@@ -28,9 +28,8 @@ exports.me = catchAsync(async (req, res, next) => {
     
     jwt.verify(token, process.env.JWY_SECRET_KEY,async function(err, decoded) {
       if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
-      
-      if(decoded.role[0]==="employee" || "doctor" || "analyst") {res.status(200).json(await avisWorkerService.getAvisWorkerByUserId(decoded.id))}
-      else if(decoded.role[0]==="donor"){ res.status(200).json(await donorService.getDonorByUserId(decoded.id))}
+      if(decoded.role[0]==="employee" || decoded.role[0]==="doctor" || decoded.role[0]=== "analyst") {res.status(200).json(await avisWorkerService.getAvisWorkerByUserId(decoded.id))}
+      else if(decoded.role[0]==="donor"){  res.status(200).json(await donorService.getDonorByUserId(decoded.id))}
       else if(decoded.role[0]==="facility"|| "avis") {res.status(200).json(await facilityService.getFacilitiesByUserId(decoded.id))}
       else if(decoded.role[0]==="admin") {res.status(200).json(await userService.getUser(decoded.id));}
       else{return res.status(404).json({ auth: false, message: 'No user found' }); }
