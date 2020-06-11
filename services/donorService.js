@@ -67,3 +67,5 @@ exports.donorCanDonate = (donor) => {
   const last_donation = donor.last_donation_date;
   return !(moment(last_donation).add(3, "M").isAfter(moment()));
 }
+
+

@@ -11,9 +11,7 @@ const router = express.Router();
 router
   .route("/")
   .get(authMiddleware.checkAuth, authMiddleware.checkFacilityCode, reservationsController.getDailyReservations)
-  .post(uploadMiddleware.uploadSingleFile('module'), authMiddleware.checkAuth, authMiddleware.checkFacilityCode, reservationsController.createReservation);
-//donationMiddleware.userCanDonate
-
+  .post(uploadMiddleware.uploadSingleFile('module'), authMiddleware.checkAuth, authMiddleware.checkFacilityCode,donationMiddleware.userCanDonate, reservationsController.createReservation);
 
 router.route("/daily_slots")
   .get(authMiddleware.checkAuth, authMiddleware.checkFacilityCode,reservationsController.getDailySlots);

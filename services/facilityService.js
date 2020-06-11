@@ -15,7 +15,7 @@ exports.getFacilityById = async (id) => {
 }
 
 exports.getAllFacilities = async () => {
-    const facility = await Facility.find();
+    const facility = await Facility.find({"role":["facility"]});
     return facility;
 }
 

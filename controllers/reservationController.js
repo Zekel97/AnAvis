@@ -7,6 +7,7 @@ moment.locale("it");
 
 exports.createReservation = catchAsync(async (req, res) => {
 req.body.module_path = req.file.path;
+console.log(req.body);
 //req.body.accepted_by = req.jwt_user.id;
 const newReservation =( req.body.slot )? await ReservationService.createReservation(req.body) :await ReservationService.createManualReservation(req.body);
 
@@ -26,7 +27,6 @@ exports.getDailyReservations = catchAsync(async (req, res) => {
     ? req.body.searched_date
     : moment().format("L");
 
-  //reservation service creare findbydate
   const allReservations = await ReservationService.findReservationsByDateInFacility(date, req.body.facility_code);
 
   res.status(200).json({

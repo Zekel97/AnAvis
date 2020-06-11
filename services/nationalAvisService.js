@@ -3,7 +3,6 @@ const donorService = require("./donorService");
 const facilityService = require("./facilityService");
 const reservationService = require("./reservationService");
 const donationService = require("./donationService");
-const Facility = require("./../models/facilityModel");
 
 
 exports.getStatistics = async () => {
