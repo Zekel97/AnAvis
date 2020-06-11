@@ -27,7 +27,6 @@ class Sidebar extends Component {
     const role = AuthService.getCurrentRole();
 
     this.setState({user_role : "/"+role});
-    console.log("/"+role);
   }
 
   render() {

@@ -14,7 +14,7 @@ class Header extends Component {
       <Navbar fluid>
         <Navbar.Header>
           <Navbar.Brand>
-            <a>{this.props.brandText}</a>
+            {this.props.brandText}
           </Navbar.Brand>
           
         </Navbar.Header>
