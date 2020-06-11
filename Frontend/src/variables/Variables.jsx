@@ -266,11 +266,12 @@ var style = {
 // // // For tables
 // //
 //
-const DocArray = ["ID", "Name", "Start Hour", "End Hour", "Working Days"];
+const DocArray = ["Name", "Start Hour", "End Hour", "Working Days"];
 const ResArray = ["ID Prenotazione","ID Utente", "Slot Orario", "Modulo"];
-const DonArray = ["ID", "Name", "Blood Group", "Last Donation Date"];
-const OpenDonArray = ["ID Donazione", "Data Donazione", "Status", "Codice Utente" ];
-const SedeArray = ["ID", "Nome"];
+const DonArray = [ "Name", "Blood Group", "Last Donation Date"];
+const OpenDonArray = [ "Data Donazione", "Status", "Codice Utente" ];
+const UserArray = ["ID", "Mail", "Nome"];
+const SedeArray = ["Nome"];
 
 
 const tdArray = [
@@ -610,6 +611,7 @@ module.exports = {
   ResArray,
   DonArray,
   OpenDonArray,
+  UserArray,
   SedeArray,
   tdArray, // For tables (TableList view)
   iconsArray, // For icons (Icons view)

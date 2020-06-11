@@ -2,6 +2,7 @@ import Dashboard from "views/Dashboard.jsx";
 import UserPage from "views/UserPage.jsx";
 
 import ReservationList from "views/Dottore/ReservationList.jsx";
+import ReservationListEmployee from "views/Impiegato/ReservationListEmployee.jsx";
 import AvviaDonazione from "views/Dottore/AvviaDonazione.jsx";
 import PrenotaDonazione from "views/Donatore/PrenotaDonazione.jsx";
 import RegistraDonatoreNP from "views/Impiegato/RegistraDonatoreNP.jsx";
@@ -11,13 +12,14 @@ import DonazioniAperte from "views/Analista/DonazioniAperte.jsx";
 import Login from "views/Authentication/Login.jsx";
 import Logout from "views/Authentication/Logout.jsx";
 import BloodRequest from "views/SedeAvis/BloodRequest.jsx";
-
+import StatisticheAvis from "views/Avis/StatisticheAvis.jsx";
 //ROUTE DEL CRUD
 import Analista from "views/Analista/Analista.jsx";
 import Donatore from "views/Donatore/Donatore.jsx";
 import Dottore from "views/Dottore/Dottore.jsx";
 import Impiegato from "views/Impiegato/Impiegato.jsx";
 import SedeAvis from "views/SedeAvis/SedeAvis.jsx";
+import Users from "views/Utenti/Users.jsx";
 
 const dashboardRoutes = [
   {
@@ -26,6 +28,20 @@ const dashboardRoutes = [
     icon: "pe-7s-graph",
     component: Dashboard,
     layout: "/notauth"
+  },
+  {
+    path: "/gestione-utenti",
+    name: "Gestione Utenti",
+    icon: "pe-7s-graph",
+    component: Users,
+    layout: "/admin"
+  },
+  {
+    path: "/userpage",
+    name: "User Page",
+    icon: "pe-7s-graph",
+    component: UserPage,
+    layout: "/admin"
   },
   {
     path: "/userpage",
@@ -77,6 +93,13 @@ const dashboardRoutes = [
     layout: "/facility"
   },
   {
+    path: "/analista-crud",
+    name: "Analista",
+    icon: "pe-7s-next-2",
+    component: Analista,
+    layout: "/avis"
+  },
+  {
     path: "/donatore-crud",
     name: "Donatore",
     icon: "pe-7s-next-2",
@@ -98,6 +121,20 @@ const dashboardRoutes = [
     layout: "/facility"
   },
   {
+    path: "/dottore-crud",
+    name: "Dottore",
+    icon: "pe-7s-next-2",
+    component: Dottore,
+    layout: "/avis"
+  },
+  {
+    path: "/impiegato-crud",
+    name: "Impiegato",
+    icon: "pe-7s-next-2",
+    component: Impiegato,
+    layout: "/avis"
+  },
+  {
     path: "/sede-avis-crud",
     name: "Sede Avis",
     icon: "pe-7s-next-2",
@@ -117,6 +154,13 @@ const dashboardRoutes = [
     icon: "pe-7s-angle-up-circle",
     component: DonazioniAperte,
     layout: "/analyst"
+  },
+  {
+    path: "/bloodrequest",
+    name: "Blood Request",
+    icon: "pe-7s-angle-up-circle",
+    component: BloodRequest,
+    layout: "/facility"
   },
   {
     path: "/bloodrequest",
@@ -152,6 +196,20 @@ const dashboardRoutes = [
     icon: "pe-7s-eyedropper",
     component: ReservationList,
     layout: "/doctor"
+  },
+  {
+    path: "/reservations",
+    name: "Reservation List",
+    icon: "pe-7s-eyedropper",
+    component: ReservationListEmployee,
+    layout: "/employee"
+  },
+  {
+    path: "/stats",
+    name: "Statistiche",
+    icon: "pe-7s-graph",
+    component: StatisticheAvis,
+    layout: "/avis"
   },
   {
     path: "/login",
@@ -201,6 +259,13 @@ const dashboardRoutes = [
     icon: "pe-7s-graph",
     component: Logout,
     layout: "/doctor"
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    icon: "pe-7s-graph",
+    component: Logout,
+    layout: "/admin"
   }
 ];
 
