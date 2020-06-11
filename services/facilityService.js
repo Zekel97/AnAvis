@@ -20,7 +20,6 @@ exports.getAllFacilities = async () => {
 }
 
 exports.createFacility = async (facilityData) => {
-
     facilityData.role = "facility";
     const newUser = await userService.createUser(facilityData.mail,facilityData.password,facilityData.role);
     if(!newUser){ return null;}

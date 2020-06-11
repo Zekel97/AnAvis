@@ -26,6 +26,11 @@ exports.findReservationsByDate = async(date) => {
   return reservations;
 }
 
+exports.findReservationsInFacility = async( facility_code) => {
+  const reservations = await Reservation.find({"facility_code":facility_code});
+  return reservations;
+}
+
 exports.findReservationsByDateInFacility = async(date, facility_code) => {
   const reservations = await Reservation.find({"date":date, "facility_code":facility_code});
   return reservations;
@@ -41,12 +46,6 @@ reservationData.slot = "unreserved user";
 reservationData.date = moment().format("L");
 return await Reservation.create(reservationData);
 };
-
-
-
-
-
-
 
 exports.calcolaSlotDisponibili = (giornoScelto, medici, prenotazioni) => {
   const giorno = moment(giornoScelto).format("YYYY-MM-DD");

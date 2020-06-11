@@ -1,5 +1,10 @@
 const catchAsync = require("./../utils/catchAsync");
 const FacilityService = require("./../services/facilityService")
+const ReservationService = require("./../services/reservationService");
+
+const moment = require("moment");
+moment.locale("it");
+
 exports.getFacility = catchAsync(async (req, res) => {
   const falcilityId = req.params.id;
   const facility = await FacilityService.getFacilityById(falcilityId);
@@ -60,6 +65,31 @@ res.status(204).json({
 });
 
 });
+
+exports.getReservationsOfFacilityInDate = catchAsync(async (req, res) => {
+  const formattedDate = moment(req.params.date, "YYYY-MM-DD").format("L");
+  const reservations = await ReservationService.findReservationsByDateInFacility(formattedDate,req.params.id);
+  
+  res.status(200).json({
+    status: 'success',
+    data: { 
+      reservations
+    }
+  });
+  
+  });
+
+  exports.getReservationsOfFacility = catchAsync(async (req, res) => {
+    const reservations = await ReservationService.findReservationsInFacility(req.params.id);
+    
+    res.status(200).json({
+      status: 'success',
+      data: { 
+        reservations
+      }
+    });
+    
+    });
 
 exports.requireBlood = catchAsync(async (req, res) => {
   const donors = await FacilityService.requireBloodByFacilities(req.params.id, req.body.blood_type);
