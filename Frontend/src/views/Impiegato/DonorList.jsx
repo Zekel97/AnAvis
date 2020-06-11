@@ -6,6 +6,7 @@ import Card from "components/Card/Card.jsx";
 import { DonArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
+import moment from 'moment';
 
 class DonorList extends Component {
   state = {
@@ -35,6 +36,14 @@ getSelectedDonor(){
   return this.state.selected_donor;
 }
 
+convertDate(date)
+{
+  console.log(date);
+  const newDate = moment(date).format("DD.MM. h:mm");
+  console.log(newDate);
+  return date;
+}
+
   render() {
     return (
       <div className="content">
@@ -62,11 +71,6 @@ getSelectedDonor(){
                           <tr key={key}>
                             <td>
                               {
-                                prop._id
-                              }
-                            </td>
-                            <td>
-                              {
                                 prop.name
                               }
                             </td>
@@ -78,7 +82,7 @@ getSelectedDonor(){
                             </td>
                             <td>
                               {
-                                prop.last_donation_date
+                               this.convertDate(prop.last_donation_date)
                               }
                             </td>
                           </tr>

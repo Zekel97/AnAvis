@@ -6,6 +6,7 @@ import Card from "components/Card/Card.jsx";
 import { DocArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "variables/Codes.jsx";
 
 class Impiegato extends Component {
   state = {
@@ -38,7 +39,6 @@ componentDidMount() {
 
 creaNuovoImpiegato = event => {
     this.setState({create_impiegato : true});
-    //appare form creazione donor
 }
 
 setDeleteId = event => {
@@ -53,11 +53,16 @@ setDeleteId = event => {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
-              console.log(res.data);
+              if(res.status === deleted)
+            {
+              alert("Eliminato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
             })   
             
-        console.log("ELIMINATO ID : "+event);
       }
       window.location.reload(false);
 }
@@ -77,10 +82,10 @@ setEditId = event => {
   .then(response => response.data)
   .then((data) => {
       this.setState({ impiegatoView: data.data.employee });
-      this.setState({ name : this.state.impiegatoView.name});
-      this.setState({start_hour : this.state.impiegatoView.start_hour});
-      this.setState({end_hour : this.state.impiegatoView.end_hour});
-      this.setState({working_days : this.state.impiegatoView.working_days});
+      this.setState({ name : data.data.employee.name});
+      this.setState({start_hour : data.data.employee.start_hour});
+      this.setState({end_hour : data.data.employee.end_hour});
+      this.setState({working_days : data.data.employee.working_days});
       })
 
 }
@@ -90,7 +95,6 @@ indietro = event => {
     this.setState({create_impiegato : null});
     this.setState({edit_impiegato : null});
 
-    //resetto tutti i campi
 }
 
 editHandleSubmit = event => {
@@ -99,7 +103,9 @@ editHandleSubmit = event => {
     const url = 'http://localhost:3000/api/v1/employees/'+this.state.edit_impiegato;
     console.log(url);
     
-
+    var r = window.confirm("Sicuro di voler confermare la modifica?"); 
+    if(r === true)
+    {
     axios.patch(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
@@ -110,16 +116,25 @@ editHandleSubmit = event => {
         "x-access-token":AuthService.getCurrentToken()
       }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        if(res.status === updated)
+            {
+              alert("Modificato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
       })
+    }
       window.location.reload(false);
   }
 
 createHandleSubmit = event => {
 
     const url = 'http://localhost:3000/api/v1/employees/';
-
+    var r = window.confirm("Sicuro di voler confermare la creazione?"); 
+      if(r === true)
+      {
     
     axios.post(url, {
       "name": this.state.name,
@@ -134,10 +149,17 @@ createHandleSubmit = event => {
         "x-access-token":AuthService.getCurrentToken()
       }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        
+        if(res.status === created)
+            {
+              alert("Creato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
       })
-
+    }
       window.location.reload(false);
 
       
@@ -202,11 +224,6 @@ handleChange = event => {
                         return (
                           <tr key={key}>
                             <td>
-                                {
-                                prop._id
-                                }
-                            </td>
-                            <td>
                               {
                                 prop.name
                               }
@@ -224,7 +241,7 @@ handleChange = event => {
                             </td>
                             <td>
                               {
-                                prop.working_days
+                                prop.working_days.toString()
                               }
                             </td>
                             <td>
@@ -272,20 +289,22 @@ handleChange = event => {
                       properties={[
                         {
                           label: "Start Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
                           defaultValue: this.state.impiegatoView.start_hour,
                           onChange: this.handleChangeStartHour
                         },
                         {
                           label: "End Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
                           defaultValue: this.state.impiegatoView.end_hour,
                           onChange: this.handleChangeEndHour
                         }
                       ]}
                     />
+
+                  <p>Working days: <strong>attuali: {this.state.working_days.toString()}</strong></p>
                   <select multiple={true} value={this.props.arrayOfOptionValues} onChange={this.handleChange}>
                     <option value={"lunedì"}>Lunedì</option>
                     <option value={"martedì"}>Martedì</option>
@@ -324,7 +343,7 @@ handleChange = event => {
                           label: "Nome Impiegato",
                           type: "text",
                           bsClass: "form-control",
-                          defaultValue: "Mike",
+                          placeholder: "Mike",
                           onChange: this.handleChangeName
                         },
                         {
@@ -335,7 +354,7 @@ handleChange = event => {
                         },
                         {
                           label: "Password",
-                          type: "text",
+                          type: "password",
                           bsClass: "form-control",
                           onChange: this.handleChangePassword
                         }
@@ -347,23 +366,20 @@ handleChange = event => {
                       properties={[
                         {
                           label: "Start Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
-                          placeholder: "Start Hour",
-                          defaultValue: "8:00",
                           onChange: this.handleChangeStartHour
                         },
                         {
                           label: "End Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
-                          placeholder: "End Hour",
-                          defaultValue: "12:00",
                           onChange: this.handleChangeEndHour
                         }
                       ]}
                     />
-                     
+                    
+                  <p>Working days: <strong>attuali: {this.state.working_days.toString()}</strong></p>
                   <select multiple={true} value={this.props.arrayOfOptionValues} onChange={this.handleChange}>
                     <option value={"lunedì"}>Lunedì</option>
                     <option value={"martedì"}>Martedì</option>

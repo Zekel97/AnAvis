@@ -17,6 +17,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import moment from 'moment';
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "variables/Codes.jsx";
 
 moment.locale("it");
 
@@ -39,7 +40,6 @@ class AvviaDonazione extends Component {
       }})
     .then(response => response.data)
     .then((data) => {
-      console.log(data.data.reservations);
         if(data.data.reservations.length == 0)
         {
           this.setState({ date: "none"});
@@ -62,21 +62,26 @@ class AvviaDonazione extends Component {
       var r = window.confirm("Sicuro di voler confermare la Donazione?"); 
       if(r === true)
       {
-                    
+          /*          
           const data = new FormData();
-      
           data.append('reservation_id',event);
-          console.log(event);
+          */
+
           const url = 'http://localhost:3000/api/v1/donations/'+event;
-        console.log(AuthService.getCurrentToken());
               
           axios.post(url,{},{
             headers: {
               "x-access-token": AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
-              console.log(res.data);
+              if(res.status === created)
+            {
+              alert("Donazione effettuata con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
             })   
 
       }

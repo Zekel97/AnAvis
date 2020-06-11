@@ -18,7 +18,7 @@ componentDidMount() {
     }})
   .then(response => response.data)
   .then((data) => {
-      if(data.data.donations.length != 0)
+      if(data.data.donations.length !== 0)
       {
         this.setState({ donations: data.data.donations })
       }
@@ -56,11 +56,6 @@ componentDidMount() {
                       {this.state.donations.map((prop, key) => {
                         return (
                           <tr key={key}>
-                            <td>
-                              {
-                                prop._id
-                              }
-                            </td>
                             <td>
                               {
                                 prop.donation_date

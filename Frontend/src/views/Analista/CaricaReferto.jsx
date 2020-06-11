@@ -20,6 +20,8 @@ import axios from 'axios';
 import moment from 'moment';
 import DonazioniAperte from "./DonazioniAperte.jsx";
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "variables/Codes.jsx";
+
 moment.locale("it");
 
 function toLocalDate(date){
@@ -43,7 +45,7 @@ class CaricaReferto extends Component {
     .then(response => response.data)
     .then((data) => {
       console.log(data.data.donations);
-        if(data.data.donations.length != 0)
+        if(data.data.donations.length !== 0)
         {
           this.setState({ donations: data.data.donations })
         }
@@ -91,8 +93,14 @@ class CaricaReferto extends Component {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
-              console.log(res.data);
+              if(res.status === success)
+            {
+              alert("Caricato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
             })   
 
       }

@@ -6,6 +6,7 @@ import Card from "components/Card/Card.jsx";
 import { SedeArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "variables/Codes.jsx";
 
 class SedeAvis extends Component {
   state = {
@@ -13,7 +14,9 @@ class SedeAvis extends Component {
     create_sede:"",
     edit_sede: "",
     sedeView: [],
-    nome: ""
+    mail: "",
+    password: "",
+    name:""
 }
 
 componentDidMount() {
@@ -33,7 +36,6 @@ componentDidMount() {
 
 creaNuovaSede = event => {
     this.setState({create_sede : true});
-    //appare form creazione donor
 }
 
 setDeleteId = event => {
@@ -48,85 +50,115 @@ setDeleteId = event => {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
-              console.log(res.data);
+
+              console.log(res.status);
+
+              if(res.status === deleted)
+              {
+                alert("Eliminato con successo!");
+              }
+              else
+              {
+                alert("Ops! C'è stato un errore!");
+              }
             })   
             
-        console.log("ELIMINATO ID : "+event);
       }
+      window.location.reload(false);
+
 }
 
 setEditId = event => {
-    console.log("modifica id");
-    
     this.setState({edit_sede : event});
     
     const url = 'http://localhost:3000/api/v1/facilities/'+event;
-    console.log(url);
-  axios.get(url)
-  .then(response => response.data)
-  .then((data) => {
-      this.setState({ sedeView: data.data.facility })
-      console.log(this.state.sedeView)
-      })
+
+    axios.get(url,{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
+    .then(res => {
+        this.setState({ sedeView: res.data.data.facility });
+        this.setState({ name: res.data.data.facility.name});
+        console.log(res.data.data.facility);
+        })
 
 }
 
 indietro = event => {
-    console.log("Indietro");
     this.setState({create_sede : null});
     this.setState({edit_sede : null});
 
-    //resetto tutti i campi
 }
 
 editHandleSubmit = event => {
-
-  //TODO
-    //invio i dati MODIFICATI
-    //regolare PATCH
-    const data = {
-      name: this.state.name
-    };
-
+  console.log(this.state.sedeView);
     const url = 'http://localhost:3000/api/v1/facilities/'+this.state.edit_sede;
 
-    console.log(url);
+    var r = window.confirm("Sicuro di voler confermare la modifica?"); 
+      if(r === true)
+      {
 
     axios.patch(url, {
       "name": this.state.name
-    })
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        if(res.status === updated)
+            {
+              alert("Modifica effettuata con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
       })
-  }
-
-createHandleSubmit = event => {
-    //CREA Sede Avis
-
-    const data = {
-      name: this.state.name
-    };
-
-    const url = 'http://localhost:3000/api/v1/facilities/';
-
-    console.log(data);
-
-    axios.post(url, {
-      "name": this.state.name
-    })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
-
+    }
       window.location.reload(false);
 
   }
 
+createHandleSubmit = event => {
+
+    const url = 'http://localhost:3000/api/v1/facilities/';
+
+    var r = window.confirm("Sicuro di voler confermare la creazione?"); 
+      if(r === true)
+      {
+
+    axios.post(url, {
+      "name":this.state.name,
+      "mail": this.state.mail,
+      "password":this.state.password
+    },{
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
+      .then(res => {
+        if(res.status === created)
+        {
+          alert("Creato con successo!");
+        }
+        else
+        {
+          alert("Ops! C'è stato un errore!");
+        }
+      })
+    }
+      window.location.reload(false);
+
+  }
+
+  handleChangeMail = event => {
+    this.setState( { mail : event.target.value});
+  }
+  handleChangePassword = event => {
+    this.setState({ password : event.target.value});
+  }
   handleChangeName = event => {
-    this.setState( { name : event.target.value});
+    this.setState( { name: event.target.value});
   }
 
 
@@ -158,11 +190,6 @@ createHandleSubmit = event => {
                       {this.state.sedi_avis.map((prop, key) => {
                         return (
                           <tr key={key}>
-                            <td>
-                                {
-                                prop._id
-                                }
-                            </td>
                             <td>
                               {
                                 prop.name
@@ -202,7 +229,7 @@ createHandleSubmit = event => {
                           label: "Nome Sede",
                           type: "text",
                           bsClass: "form-control",
-                          defaultValue: this.state.sedeView.name,
+                          defaultValue: this.state.name,
                           onChange: this.handleChangeName
                         }
                       ]}
@@ -221,7 +248,7 @@ createHandleSubmit = event => {
                   
         </Grid>}
                 
-        { /* Crea Donatore*/}
+        { /* Crea Sede*/}
         {this.state.create_sede && <Grid fluid>
           <Row>
             <Col md={12}>
@@ -231,13 +258,24 @@ createHandleSubmit = event => {
                 content={
                   <form onSubmit={this.createHandleSubmit} >
                     <FormInputs
-                      ncols={["col-md-6"]}
+                      ncols={["col-md-6", "col-md-6", "col-md-6"]}
                       properties={[
+                        {
+                          label: "Mail",
+                          type: "email",
+                          bsClass: "form-control",
+                          onChange: this.handleChangeMail
+                        },
+                        {
+                          label: "Password",
+                          type: "password",
+                          bsClass: "form-control",
+                          onChange: this.handleChangePassword
+                        },
                         {
                           label: "Nome Sede",
                           type: "text",
                           bsClass: "form-control",
-                          defaultValue: "Mike",
                           onChange: this.handleChangeName
                         }
                       ]}

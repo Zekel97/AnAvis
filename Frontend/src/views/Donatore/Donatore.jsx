@@ -6,6 +6,9 @@ import Card from "components/Card/Card.jsx";
 import { DonArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted} from "../../variables/Codes.jsx";
+import { created } from "variables/Codes";
+import moment from 'moment';
 
 class Donatore extends Component {
   state = {
@@ -15,7 +18,7 @@ class Donatore extends Component {
     donorView: [],
     name: "",
     last_donation_date: "",
-    blood_group: "",
+    blood_group: "0+",
     facility_code:"",
     mail: "",
     password: "",
@@ -39,11 +42,18 @@ componentDidMount() {
 
 creaNuovoDonor = event => {
     this.setState({create_donor : true});
-    //appare form creazione donor
+}
+
+convertDate(date)
+{
+  console.log(date);
+  const newDate = moment(date).format("DD.MM. h:mm");
+  console.log(newDate);
+  return date;
 }
 
 setDeleteId = event => {
-
+  
     var r = window.confirm("Sicuro di voler confermare l'eliminazione?"); 
       if(r === true)
       {
@@ -54,17 +64,27 @@ setDeleteId = event => {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
-              console.log(res.data);
+              
+            if(res.status === deleted)
+            {
+              alert("Eliminato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
+            }).catch(error => {
+              console.log(error.message);
             })   
             
-        console.log("ELIMINATO ID : "+event);
       }
+
       window.location.reload(false);
+      
 }
 
+
 setEditId = event => {
-    console.log(event);
     
     this.setState({edit_donor : event});
     
@@ -90,53 +110,82 @@ indietro = event => {
     this.setState({create_donor : null});
     this.setState({edit_donor : null});
 
-    //resetto tutti i campi
 }
 
 editHandleSubmit = event => {
 
-    console.log(event.target.value);
     const url = 'http://localhost:3000/api/v1/donors/'+this.state.user_id;
 
-    console.log(this.state.blood_group);
-    axios.patch(url, {
-      "name": this.state.name,
-      "blood_group": this.state.blood_group
-    },{
-      headers: {
-        "x-access-token":AuthService.getCurrentToken()
-      }})
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
-    
-      window.location.reload(false);
+    var r = window.confirm("Sicuro di voler confermare la modifica?"); 
+      if(r === true)
+      {
 
+      return axios.patch(url, {
+        "name": this.state.name,
+        "blood_group": this.state.blood_group
+      },{
+        headers: {
+          "x-access-token":AuthService.getCurrentToken()
+        }})
+        .then(res => {
+          if(res.status === updated)
+              {
+                alert("Modificato con successo!");
+              }
+              else
+              {
+                alert("Ops! C'è stato un errore!");
+              }
+        })
+    
+      
+    }
   }
 
 createHandleSubmit = event => {
-    //CREA Donatore
-
     const url = 'http://localhost:3000/api/v1/donors/';
-
-    axios.post(url, {
-      "name": this.state.name,
-      "blood_group": this.state.blood_group, 
-      "facility_code": AuthService.getCurrentFacilityCode(),
-      "mail": this.state.mail,
-      "password": this.state.password
-    },{
-      headers: {
-        "x-access-token":AuthService.getCurrentToken()
-      }})
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
+    var r = window.confirm("Sicuro di voler confermare la creazione?"); 
+    
+    if(r)
+    {
+      return axios.post(url, {
+        "name": this.state.name,
+        "blood_group": this.state.blood_group, 
+        "facility_code": AuthService.getCurrentFacilityCode(),
+        "mail": this.state.mail,
+        "password": this.state.password
+      },{
+        headers: {
+          "x-access-token":AuthService.getCurrentToken()
+        }
       })
+        .then(res => {
 
+          if(res.status === created)
+              {
+                alert("Creato con successo!");
+              }
+              else
+              {
+                alert("Ops! C'è stato un errore!");
+              }
+        }).catch(error => {
+          console.log(error.message);
+        })
+    }
       window.location.reload(false);
   }
+
+  dropdown() {
+    const bloodTypes = ["0+","0-","A+","A-","B+","B-","AB+","AB-"];
+    const options =[];
+    bloodTypes.map( (element, key) => {options.push(<option key={key} value={element}>{element}</option>)});  
+      return(
+          <select onChange={this.handleChangeBloodG}> 
+          {options}
+        </select>
+      )
+ }
 
   handleChangeName = event => {
     this.setState({name : event.target.value});
@@ -185,11 +234,7 @@ createHandleSubmit = event => {
                       {this.state.donors.map((prop, key) => {
                         return (
                           <tr key={key}>
-                            <td>
-                                {
-                                prop._id
-                                }
-                            </td>
+
                             <td>
                               {
                                 prop.name
@@ -203,7 +248,7 @@ createHandleSubmit = event => {
                             </td>
                             <td>
                               {
-                                prop.last_donation_date
+                                moment(prop.last_donation_date).format("DD/MM/YYYY")
                               }
                             </td>
                             <td>
@@ -248,18 +293,9 @@ createHandleSubmit = event => {
                         }
                       ]}
                     />
-                    <FormInputs
-                      ncols={["col-md-6"]}
-                      properties={[
-                        {
-                          label: "Blood Group",
-                          type: "text",
-                          bsClass: "form-control",
-                          defaultValue: this.state.donorView.blood_group,
-                          onChange: this.handleChangeBloodG
-                        }
-                      ]}
-                    />
+                    <p>Gruppo Sanguigno: <strong>attuale: {this.state.blood_group}</strong></p>
+                    {this.dropdown()}
+
                     
                     <Button bsStyle="info" pullRight fill type="submit">
                       Send
@@ -299,24 +335,16 @@ createHandleSubmit = event => {
                         },
                         {
                           label: "Password",
-                          type: "text",
+                          type: "password",
                           bsClass: "form-control",
                           onChange: this.handleChangePassword
                         }
                       ]}
                     />
-                    <FormInputs
-                      ncols={["col-md-6"]}
-                      properties={[
-                        {
-                          label: "Blood Group",
-                          type: "text",
-                          bsClass: "form-control",
-                          onChange: this.handleChangeBloodG
-                        }
-                      ]}
-                    />
                     
+                    <p>Gruppo Sanguigno: </p>
+                    {this.dropdown()}
+
                     <Button bsStyle="info" pullRight fill type="submit">
                       Send
                     </Button>

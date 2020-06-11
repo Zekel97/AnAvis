@@ -72,7 +72,7 @@ componentDidMount() {
                             </td>
                             <td>
                               {
-                                prop.working_days
+                                prop.working_days.toString()
                               }
                             </td>
                           </tr>

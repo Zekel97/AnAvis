@@ -6,6 +6,8 @@ import Card from "components/Card/Card.jsx";
 import { DocArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "../../variables/Codes.jsx";
+
 
 class Analista extends Component {
   state = {
@@ -53,19 +55,23 @@ setDeleteId = event => {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
-              console.log(res.data);
+              if(res.status === deleted)
+              {
+                alert("Eliminato con successo!");
+              }
+              else
+              {
+                alert("Ops! C'è stato un errore!");
+              }
             })   
             
-        console.log("ELIMINATO ID : "+event);
       }
 
       window.location.reload(false);
 }
 
 setEditId = event => {
-    console.log("Visualizza un solo ID");
-    
+    console.log(event);
     this.setState({edit_analist : event});
     
     const url = 'http://localhost:3000/api/v1/analysts/'+event;
@@ -79,9 +85,9 @@ setEditId = event => {
       this.setState({ analistView: data.data.analyst });
 
       this.setState({ name : this.state.analistView.name});
-      this.setState({start_hour : this.state.analistView.start_hour});
-      this.setState({end_hour : this.state.analistView.end_hour});
-      this.setState({working_days : this.state.analistView.working_days});
+      this.setState({start_hour : data.data.analyst.start_hour});
+      this.setState({end_hour : data.data.analyst.end_hour});
+      this.setState({working_days : data.data.analyst.working_days});
 
       })
 }
@@ -97,27 +103,43 @@ editHandleSubmit = event => {
 
     const url = 'http://localhost:3000/api/v1/analysts/'+this.state.edit_analist;
 
-
+    var r = window.confirm("Sicuro di voler confermare la modifica?"); 
+    if(r === true)
+    {
     axios.patch(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
-      "working_days": this.state.working_days,
-      
+      "working_days": this.state.working_days
     },{
       headers: {
         "x-access-token":AuthService.getCurrentToken()
       }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        
+
+        if(res.status === updated)
+        {
+          alert("Modificato con successo!");
+        }
+        else
+        {
+          alert("Ops! C'è stato un errore!");
+        }
+            
+        console.log("Prova edit analista");
+
       })
+    }
   }
 
   createHandleSubmit = event => {
 
     const url = 'http://localhost:3000/api/v1/analysts/';
 
+    var r = window.confirm("Sicuro di voler confermare la creazione?"); 
+      if(r === true)
+      {
     axios.post(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
@@ -130,12 +152,20 @@ editHandleSubmit = event => {
         "x-access-token":AuthService.getCurrentToken()
       }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+
+        if(res.status === created)
+        {
+          alert("Creato con successo!");
+        }
+        else
+        {
+          alert("Ops! C'è stato un errore!");
+        }
+
       })
-
+      
+    }
       window.location.reload(false);
-
   }
 
   handleChangeName = event => {
@@ -217,7 +247,7 @@ editHandleSubmit = event => {
                             </td>
                             <td>
                               {
-                                prop.working_days
+                                prop.working_days.toString()
                               }
                             </td>
                             <td>
@@ -245,7 +275,7 @@ editHandleSubmit = event => {
         {/* Modifica Analista */}
         {this.state.edit_analist && <Grid fluid>
           <Row>
-            <Col md={12}>
+            <Col md={15}>
                 <Button type="button" onClick={() => this.indietro()}> Indietro</Button>
                 <Card
                 title="Edit Analista"
@@ -267,22 +297,24 @@ editHandleSubmit = event => {
                       ncols={["col-md-6", "col-md-6"]}
                       properties={[
                         {
-                          label: "End Hour",
-                          type: "text",
-                          bsClass: "form-control",
-                          defaultValue: this.state.analistView.end_hour,
-                          onChange: this.handleChangeEndHour
-                        },
-                        {
                           label: "Start Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
                           defaultValue: this.state.analistView.start_hour,
                           onChange: this.handleChangeStartHour
+                        },
+                        {
+                          label: "End Hour",
+                          type: "time",
+                          bsClass: "form-control",
+                          defaultValue: this.state.analistView.end_hour,
+                          onChange: this.handleChangeEndHour
                         }
                       ]}
 
                     />
+
+                    <p>Working days: <strong>attuali: {this.state.working_days.toString()}</strong></p>
                     <select multiple={true} value={this.props.arrayOfOptionValues} onChange={this.handleChange}>
                       <option value={"lunedì"}>Lunedì</option>
                       <option value={"martedì"}>Martedì</option>
@@ -321,19 +353,19 @@ editHandleSubmit = event => {
                           label: "Nome Analista",
                           type: "text",
                           bsClass: "form-control",
-                          defaultValue: this.state.analistView.name,
+                          placeholder: this.state.analistView.name,
                           onChange: this.handleChangeName
                         },
                         {
                           label: "Mail",
                           type: "email",
                           bsClass: "form-control",
-                          defaultValue: this.state.analistView.mail,
+                          placeholder: this.state.analistView.mail,
                           onChange: this.handleChangeMail
                         },
                         {
                           label: "Password",
-                          type: "text",
+                          type: "password",
                           bsClass: "form-control",
                           onChange: this.handleChangePassword
                         }
@@ -344,16 +376,16 @@ editHandleSubmit = event => {
                       properties={[
                         {
                           label: "Start Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
-                          defaultValue: this.state.analistView.start_hour,
+                          placeholder: "08:00",
                           onChange: this.handleChangeStartHour
                         },
                         {
                           label: "End Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
-                          defaultValue: this.state.analistView.end_hour,
+                          placeholder: "12:00",
                           onChange: this.handleChangeEndHour
                         }
                       ]}

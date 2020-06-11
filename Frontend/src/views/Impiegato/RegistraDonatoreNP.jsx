@@ -18,6 +18,8 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import moment from 'moment';
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "variables/Codes.jsx";
+
 moment.locale("it");
 
 
@@ -55,7 +57,6 @@ class RegistraDonatoreNP extends Component {
   
   onChangeHandler=event=>{
     this.setState({ module: event.target.files[0],loaded: 0});
-    console.log(event.target.files[0]);
     }
 
   handleSubmit = event => {
@@ -64,8 +65,11 @@ class RegistraDonatoreNP extends Component {
 
     data.append('donor_id', this.state.user_code);
     data.append('module', this.state.module);
+    data.append('facility_code', AuthService.getCurrentFacilityCode());
     
-    console.log(data);
+    var r = window.confirm("Sicuro di voler confermare la registrazione?"); 
+      if(r === true)
+      {
 
     const url = 'http://localhost:3000/api/v1/reservations/';
 
@@ -74,10 +78,16 @@ class RegistraDonatoreNP extends Component {
         "x-access-token":AuthService.getCurrentToken()
       }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        if(res.status === created)
+            {
+              alert("Registrazione creata con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
       })   
-
+    }
       window.location.reload(false);
 
   }

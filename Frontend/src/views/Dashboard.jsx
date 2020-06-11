@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import authService from "services/auth.service";
-
 
 class Dashboard extends Component {
   render() {

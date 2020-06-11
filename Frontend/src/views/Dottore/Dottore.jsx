@@ -6,6 +6,7 @@ import Card from "components/Card/Card.jsx";
 import { DocArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "variables/Codes.jsx";
 
 class Dottore extends Component {
   state = {
@@ -37,7 +38,6 @@ componentDidMount() {
 
 creaNuovoDoctor = event => {
     this.setState({create_doctor : true});
-    //appare form creazione doctor
 }
 
 setDeleteId = event => {
@@ -52,11 +52,16 @@ setDeleteId = event => {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
-              console.log(res.data);
+              if(res.status === deleted)
+            {
+              alert("Eliminato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
             })   
             
-        console.log("ELIMINATO ID : "+event);
       }
 
       window.location.reload(false);
@@ -77,12 +82,11 @@ setEditId = event => {
   .then((data) => {
       this.setState({ doctorView: data.data.doctor });
 
-      this.setState({ name : this.state.doctorView.name});
-      this.setState({start_hour : this.state.doctorView.start_hour});
-      this.setState({end_hour : this.state.doctorView.end_hour});
-      this.setState({working_days : this.state.doctorView.working_days});
-      this.setState({mail: this.state.doctorView.mail});
-      console.log(this.state.doctorView)
+      this.setState({ name : data.data.doctor.name});
+      this.setState({start_hour : data.data.doctor.start_hour});
+      this.setState({end_hour : data.data.doctor.end_hour});
+      this.setState({working_days : data.data.doctor.working_days});
+      this.setState({mail: data.data.doctor.mail});
       })
 
 }
@@ -92,13 +96,16 @@ indietro = event => {
     this.setState({create_doctor : null});
     this.setState({edit_doctor : null});
 
-    //resetto tutti i campi
 }
 
 editHandleSubmit = event => {
 
 
     const url = 'http://localhost:3000/api/v1/doctors/'+this.state.edit_doctor;
+
+    var r = window.confirm("Sicuro di voler confermare la modifica?"); 
+      if(r === true)
+      {
 
     axios.patch(url, {
       "name": this.state.name,
@@ -111,14 +118,27 @@ editHandleSubmit = event => {
       }})
       .then(res => {
         
-        console.log(res.data);
+        if(res.status === updated)
+            {
+              alert("Modificato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
       })
+    }
+    window.location.reload(false);
   }
 
 createHandleSubmit = event => {
 
 
     const url = 'http://localhost:3000/api/v1/doctors/';
+
+    var r = window.confirm("Sicuro di voler confermare la creazione?"); 
+      if(r === true)
+      {
 
     axios.post(url, {
       "name": this.state.name,
@@ -132,10 +152,16 @@ createHandleSubmit = event => {
         "x-access-token":AuthService.getCurrentToken()
       }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        if(res.status === created)
+            {
+              alert("Creato con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
       })
-
+    }
       window.location.reload(false);
 
   }
@@ -195,11 +221,7 @@ createHandleSubmit = event => {
                       {this.state.doctors.map((prop, key) => {
                         return (
                           <tr key={key}>
-                            <td>
-                                {
-                                prop._id
-                                }
-                            </td>
+
                             <td>
                               {
                                 prop.name
@@ -218,7 +240,7 @@ createHandleSubmit = event => {
                             </td>
                             <td>
                               {
-                                prop.working_days
+                                prop.working_days.toString()
                               }
                             </td>
                             <td>
@@ -264,14 +286,14 @@ createHandleSubmit = event => {
                       properties={[
                         {
                           label: "Start Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
                           defaultValue: this.state.doctorView.start_hour,
                           onChange: this.handleChangeStartHour
                         },
                         {
                           label: "End Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
                           defaultValue: this.state.doctorView.end_hour,
                           onChange: this.handleChangeEndHour
@@ -279,6 +301,7 @@ createHandleSubmit = event => {
                       ]}
                     />
                     
+                    <p>Working days: <strong>attuali: {this.state.working_days.toString()}</strong></p>
                     <select multiple={true} value={this.props.arrayOfOptionValues} onChange={this.handleChange}>
                     <option value={"lunedì"}>Lunedì</option>
                     <option value={"martedì"}>Martedì</option>
@@ -327,7 +350,7 @@ createHandleSubmit = event => {
                         },
                         {
                           label: "Password",
-                          type: "text",
+                          type: "password",
                           bsClass: "form-control",
                           onChange: this.handleChangePassword
                         }
@@ -338,13 +361,13 @@ createHandleSubmit = event => {
                       properties={[
                         {
                           label: "Start Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
                           onChange: this.handleChangeStartHour
                         },
                         {
                           label: "End Hour",
-                          type: "text",
+                          type: "time",
                           bsClass: "form-control",
                           onChange: this.handleChangeEndHour
                         }

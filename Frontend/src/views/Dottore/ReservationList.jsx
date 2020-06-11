@@ -20,7 +20,7 @@ componentDidMount() {
     }})
   .then(response => response.data)
   .then((data) => {
-      if(data.data.reservations.length == 0)
+      if(data.data.reservations.length === 0)
       {
         this.setState({ date: "none"});
       }
@@ -36,6 +36,15 @@ componentDidMount() {
   })
 
 }
+
+urlify(url_part)
+{
+  let url = "http://localhost:3000/";
+  url = url + url_part;
+  console.log(url);
+  return url;
+}
+
   render() {
     return (
       <div className="content">
@@ -77,9 +86,7 @@ componentDidMount() {
                               }
                             </td>
                             <td>
-                              {
-                                prop.module_path
-                              }
+                              <a href={this.urlify(prop.module_path)}></a>
                             </td>  
                           </tr>
                         );

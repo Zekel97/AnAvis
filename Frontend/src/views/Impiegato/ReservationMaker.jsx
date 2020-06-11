@@ -36,15 +36,6 @@ class ReservationMaker extends Component {
   handleChangeSlot = event => {
     this.setState({ slot: event.target.value });
   }
-
-  /*
-    user_code 
-    module
-    date
-    slot
-  */
-
-  // -- FILE UPLOAD FUNCTION
   onChangeHandler=event=>{
     this.setState({ module: event.target.files[0],loaded: 0});
     console.log(event.target.files[0]);
@@ -92,7 +83,7 @@ class ReservationMaker extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Nome Donatore",
-                          defaultValue: "Mike",
+                          placeholder: "Mike",
                           onChange: this.handleChangeCode
                         },
                         {
@@ -100,7 +91,7 @@ class ReservationMaker extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Last Donation Date",
-                          defaultValue: "1/04/2020",
+                          placeholder: "1/04/2020",
                           onChange: this.handleChangeDate
                         }
                       ]}
@@ -113,7 +104,7 @@ class ReservationMaker extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Blood Group",
-                          defaultValue: "Mike",
+                          placeholder: "Mike",
                           onChange: this.handleChangeSlot
                         }
                       ]}

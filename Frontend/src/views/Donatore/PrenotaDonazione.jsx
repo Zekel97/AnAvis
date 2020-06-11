@@ -17,6 +17,7 @@ import axios from 'axios';
 import moment from 'moment';
 import authHeader from "../../services/auth-header";
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "variables/Codes.jsx";
 
 moment.locale("it");
 
@@ -35,14 +36,45 @@ class PrenotaDonazione extends Component {
     selectedSlot: ''
   }
    
-   dropdown() {
 
-      if (!this.state.slot && this.state.slot.length === 0){
+  moduleShow()
+  {
+    if (this.state.slot==undefined || this.state.slot.length === 0){
+      return <div></div>
+    }
+    else
+    {
+      return <div>
+        <br />
+        <p>Upload Modulo:</p>
+        <input type="file" name="file" onChange={this.onChangeHandler}/>
+      </div>
+    }
+  }
+
+  timeSlotShow()
+  {
+    if (this.state.slot==undefined || this.state.slot.length === 0)
+    {
+      return <div></div>
+    }
+    else
+    {
+      return <div>
+        <p>Scegli slot orario:</p>
+        {this.dropdown()}
+      </div>
+    }
+  }
+
+
+   dropdown() 
+   {
+      if (this.state.slot==undefined || this.state.slot.length === 0){
         return <div></div>
       }
       else
       {
-
         const options = [];
         this.state.slot.map( (element, key) => {options.push(<option key={key} value={element}>{element}</option>)});
         return(
@@ -57,7 +89,6 @@ class PrenotaDonazione extends Component {
 
   handleChangeSelectedSlot = event => {
     this.setState({selectedSlot : event.target.value});
-    console.log(this.state.selectedSlot);
   }
 
   handleChangeDate = event => {
@@ -88,16 +119,18 @@ class PrenotaDonazione extends Component {
                 })
 
                 this.setState({slot : slot});
-                console.log(this.state);
-                
-                this.setState({giorno : data.data.giorno})
-                  
+                console.log(data.data);                
+                this.setState({giorno : data.data.giorno});
                   
             })
               .catch(function (error) {
 
                   console.log(error);
               })
+        }
+        else
+        {
+          this.setState({slot: null});
         }   
 
   }
@@ -105,10 +138,8 @@ class PrenotaDonazione extends Component {
   }
   
 
-  // -- FILE UPLOAD FUNCTION
   onChangeHandler=event=>{
     this.setState({ module: event.target.files[0],loaded: 0});
-    console.log(event.target.files[0]);
     }
 
   handleSubmit = event => {
@@ -120,25 +151,28 @@ class PrenotaDonazione extends Component {
     data.append('date',moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
     data.append('slot',this.state.selectedSlot);
     
-    console.log(data);
-
+    var r = window.confirm("Sicuro di voler confermare la prenotazione?"); 
+      if(r === true)
+      {
     const url = 'http://localhost:3000/api/v1/reservations/';
-    console.log(AuthService.getCurrentRoleId());
-    console.log(moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
+
     axios.post(url, data,{
     headers: {
       "x-access-token":AuthService.getCurrentToken()
     }})
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        if(res.status === created)
+            {
+              alert("Prenotazione inviata con successo!");
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
       })
-      window.location.reload(false);
-
-      
+    }
+      window.location.reload(false);   
   }
-
-
 
   render() {
 
@@ -158,16 +192,13 @@ class PrenotaDonazione extends Component {
                           label: "Date",
                           type: "Date",
                           bsClass: "form-control",
-                          placeholder: "Last Donation Date",
-                          defaultValue: "1/04/2020",
                           onChange: this.handleChangeDate
                         }
                       ]}
                     />
-                    <p>Upload MODULO:</p>
-                    {this.dropdown()}
+                    {this.timeSlotShow()}
 
-                    <input type="file" name="file" onChange={this.onChangeHandler}/>
+                    {this.moduleShow()}
                     
                     <Button bsStyle="info" pullRight fill type="submit">
                       Send

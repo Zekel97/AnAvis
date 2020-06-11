@@ -7,19 +7,21 @@ import {
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import AuthService from "../../services/auth.service";
+import {updated, success, deleted, created} from "../../variables/Codes.jsx";
+
 
 class BloodRequest extends Component {
     state={
-        bloodType: ''
+        bloodType: '0+',
+        donorsContacted: ''
     }
 
     handleChangeType = event => {
-        console.log(event.target.value);
         this.setState({bloodType : event.target.value});
     }
 
     dropdown() {
-          const bloodTypes = ["0+","0-","A+","A-","B+","B-","AB+","AB-"];
+        const bloodTypes = ["0+","0-","A+","A-","B+","B-","AB+","AB-"];
         const options =[];
         bloodTypes.map( (element, key) => {options.push(<option key={key} value={element}>{element}</option>)});  
           return(
@@ -29,21 +31,56 @@ class BloodRequest extends Component {
           )
      }
 
+
      handleSubmit = event => {
         const url = 'http://localhost:3000/api/v1/facilities/'+AuthService.getCurrentFacilityCode()+"/require_blood";
-        const urlfake = '';
 
-        axios.post(url, {"bloodType" : this.state.bloodType},{
+        var r = window.confirm("Sicuro di voler confermare la richiesta?"); 
+      if(r === true)
+      {
+
+        axios.post(url, {"blood_type" : this.state.bloodType},{
           headers: {
             "x-access-token":AuthService.getCurrentToken()
           }})
           .then(res => {
-            console.log(res.status);
-            console.log(res.data);
+            
+            if(res.status === success)
+            {
+              alert("Richiesta inviata con successo!");
+              this.setState({donorsContacted : res.data.data.donors_contacted});
+            }
+            else
+            {
+              alert("Ops! C'è stato un errore!");
+            }
+
+          }).catch(err => {
+            console.log(err);
           })
+        }
     
-          window.location.reload(false);
-          
+          event.preventDefault();
+      }
+
+      contactedDonorsShow()
+      {
+        if(this.state.donorsContacted!== '')
+        {
+          return(
+            <div>
+              <h2>Sono stati contattati {this.state.donorsContacted} donatori!</h2>
+            </div>
+          )
+        }
+        else if(this.state.donorsContacted === 1)
+        {
+          return(
+            <div>
+              <h2>E' stato contattato {this.state.donorsContacted} donatore!</h2>
+            </div>
+          )
+        }
       }
 
   render() {
@@ -53,10 +90,12 @@ class BloodRequest extends Component {
           <Row>
             <Col md={8}></Col>
             <form onSubmit={this.handleSubmit} >
+              <h3>Seleziona il gruppo sanguigno da richiedere: </h3>
                 {this.dropdown()}
                 <Button bsStyle="info" pullRight fill type="submit"> Invia Richiesta </Button>
             </form>
 
+            {this.contactedDonorsShow()}
 
           </Row>
         </Grid>
