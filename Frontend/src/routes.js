@@ -1,5 +1,8 @@
 import Dashboard from "views/Dashboard.jsx";
 import UserPage from "views/UserPage.jsx";
+import ReservationHistory from "views/Donatore/ReservationHistory.jsx";
+import ActivePrenotations from "views/Donatore/ActivePrenotations.jsx";
+
 
 import ReservationList from "views/Dottore/ReservationList.jsx";
 import ReservationListEmployee from "views/Impiegato/ReservationListEmployee.jsx";
@@ -13,7 +16,7 @@ import Login from "views/Authentication/Login.jsx";
 import Logout from "views/Authentication/Logout.jsx";
 import BloodRequest from "views/SedeAvis/BloodRequest.jsx";
 import StatisticheAvis from "views/Avis/StatisticheAvis.jsx";
-//ROUTE DEL CRUD
+
 import Analista from "views/Analista/Analista.jsx";
 import Donatore from "views/Donatore/Donatore.jsx";
 import Dottore from "views/Dottore/Dottore.jsx";
@@ -28,13 +31,6 @@ const dashboardRoutes = [
     icon: "pe-7s-graph",
     component: Dashboard,
     layout: "/notauth"
-  },
-  {
-    path: "/gestione-utenti",
-    name: "Gestione Utenti",
-    icon: "pe-7s-graph",
-    component: Users,
-    layout: "/admin"
   },
   {
     path: "/userpage",
@@ -72,6 +68,20 @@ const dashboardRoutes = [
     layout: "/donor"
   },
   {
+    path: "/res-history",
+    name: "Storico Referti",
+    icon: "pe-7s-graph",
+    component: ReservationHistory,
+    layout: "/donor"
+  },
+  {
+    path: "/active-prenotations",
+    name: "Prenotazioni Attive",
+    icon: "pe-7s-graph",
+    component: ActivePrenotations,
+    layout: "/donor"
+  },
+  {
     path: "/userpage",
     name: "User Page",
     icon: "pe-7s-graph",
@@ -84,6 +94,13 @@ const dashboardRoutes = [
     icon: "pe-7s-graph",
     component: UserPage,
     layout: "/doctor"
+  },
+  {
+    path: "/gestione-utenti",
+    name: "Gestione Utenti",
+    icon: "pe-7s-graph",
+    component: Users,
+    layout: "/admin"
   },
   {
     path: "/analista-crud",

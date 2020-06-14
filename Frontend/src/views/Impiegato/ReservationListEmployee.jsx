@@ -6,6 +6,7 @@ import { ResArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
 import Button from "components/CustomButton/CustomButton.jsx";
+import authService from "../../services/auth.service";
 
 
 class ReservationList extends Component {
@@ -16,7 +17,7 @@ class ReservationList extends Component {
 }
 
 componentDidMount() {
-  const url = 'http://localhost:3000/api/v1/reservations/';
+  const url = 'http://localhost:3000/api/v1/facilities/'+authService.getCurrentFacilityCode()+'/reservations/';
   axios.get(url,{
     headers: {
       "x-access-token":AuthService.getCurrentToken()
@@ -29,7 +30,7 @@ componentDidMount() {
       }
       else{
         this.setState({ reservations: data.data.reservations })
-        this.setState({ date: data.data.reservations[0].date})
+        this.setState({ date: "TUTTE"})
       }
       })
   .catch(function (error) {
@@ -46,8 +47,7 @@ handleChangeDate = event => {
 
 handleUpdateTable = event => {
   event.preventDefault();
-  const url = 'http://localhost:3000/api/v1/reservations/'+this.state.choosenDate;
-  console.log(url);
+  const url = 'http://localhost:3000/api/v1/facilities/'+authService.getCurrentFacilityCode()+'/reservations/'+this.state.choosenDate;
 
   axios.get(url,{
     headers: {
@@ -55,10 +55,10 @@ handleUpdateTable = event => {
     }})
   .then(response => response.data)
   .then((data) => {
-
       if(data.data.reservations.length === 0)
       {
-        this.setState({ date: "none"});
+        this.setState({ date: this.state.choosenDate});
+        this.setState({reservations: []});
       }
       else{
         this.setState({ reservations: data.data.reservations })
@@ -130,7 +130,7 @@ urlify(url_part)
                             </td>
                             <td>
                               {
-                                prop.user_code
+                                prop.donor_id
                               }
                             </td>
                             <td>
@@ -139,8 +139,13 @@ urlify(url_part)
                               }
                             </td>
                             <td>
-                              <a href={this.urlify(prop.module_path)}></a>
+                              {
+                                prop.date
+                              }
                             </td>  
+                            <td>
+                              <a href={this.urlify(prop.module_path)} target="_blank">MODULO</a>
+                            </td>
                           </tr>
                         );
                       })}

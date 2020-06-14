@@ -43,7 +43,6 @@ setEditId = event => {
 
     const urlSingolo = 'http://localhost:3000/api/v1/users/'+event;
 
-    console.log("hey");
     axios.get(urlSingolo, {
       headers: {
         "x-access-token":AuthService.getCurrentToken()
@@ -72,7 +71,7 @@ editHandleSubmit = event => {
       if(r === true)
       {
     
-    axios.patch(url, {
+    return axios.patch(url, {
       "mail": this.state.mail
     },{
       headers: {
@@ -83,13 +82,11 @@ editHandleSubmit = event => {
             {
               alert("Modifica effettuata con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
+            window.location.reload(false);
+      }).catch(err => {
+        alert(err.response.data.message);
       })
       }
-      window.location.reload(false);
 
   }
 
@@ -102,7 +99,7 @@ editHandleSubmit = event => {
       if(r === true)
       {
 
-    axios.patch(url,{},{
+    return axios.patch(url,{},{
       headers: {
         "x-access-token":AuthService.getCurrentToken()
       }})
@@ -111,13 +108,11 @@ editHandleSubmit = event => {
             {
               alert("Reset effettuato con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
+            window.location.reload(false);
+      }).catch(err => {
+        alert(err.response.data.message);
       })
       }
-      window.location.reload(false);
   
   
   }
@@ -147,7 +142,7 @@ editHandleSubmit = event => {
           <Row>
             <Col md={12}>
               <Card
-                title="User List"
+                title="Lista Utenti"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -208,7 +203,7 @@ editHandleSubmit = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.indietro()}> Indietro</Button>
                 <Card
-                title="Edit User"
+                title="Modifica Utente"
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                     <FormInputs

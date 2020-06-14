@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var DonorSchema = new Schema({
   name: {
     type: String,
-    required: "Nome Utente",
+    required: "E' necessario inserire un nome per questo donatore",
   },
   created_date: {
     type: Date,
@@ -16,11 +16,12 @@ var DonorSchema = new Schema({
   },
   blood_group: {
     type: String,
-    required: "Gruppo Sanguigneo Donatore",
+    enum: ["0+","0-","A+","A-","B+","B-","AB+","AB-"],
+    required: "E' necessario inserire un gruppo sanguigno per il donatore",
   },
   facility_code: {
     type: String,
-    required: "Codice della Sede alla quale il donatore appartiene",
+    required: "E' necessario inserire il codice della Sede alla quale il donatore appartiene",
   },
   user_id:{
     type:String,

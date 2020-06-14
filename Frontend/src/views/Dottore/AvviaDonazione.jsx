@@ -50,8 +50,6 @@ class AvviaDonazione extends Component {
         }
         })
     .catch(function (error) {
-      
-     
       console.log(error);
     })
   
@@ -62,14 +60,9 @@ class AvviaDonazione extends Component {
       var r = window.confirm("Sicuro di voler confermare la Donazione?"); 
       if(r === true)
       {
-          /*          
-          const data = new FormData();
-          data.append('reservation_id',event);
-          */
-
           const url = 'http://localhost:3000/api/v1/donations/'+event;
               
-          axios.post(url,{},{
+          return axios.post(url,{},{
             headers: {
               "x-access-token": AuthService.getCurrentToken()
             }})
@@ -78,15 +71,13 @@ class AvviaDonazione extends Component {
             {
               alert("Donazione effettuata con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
-            })   
+            window.location.reload(false);
+            }).catch(err => {
+              alert(err.response.data.message);
+            })
 
       }
 
-      window.location.reload(false);
 
     
   }
@@ -130,6 +121,11 @@ class AvviaDonazione extends Component {
                             <td>
                               {
                                 prop.slot
+                              }
+                            </td>
+                            <td>
+                              {
+                                prop.date
                               }
                             </td>
                             <td>
