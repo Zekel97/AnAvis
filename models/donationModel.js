@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var DonationSchema = new Schema({
   donor_id: {
     type: String,
-    required: "User Code",
+    required: "E' necessario inserire uno user code",
   },
 
   creation_date: {
@@ -14,12 +14,12 @@ var DonationSchema = new Schema({
   },  
   facility_code: {
     type: String,
-    required: "Codice della Sede alla quale il donatore appartiene",
+    required: "E' necessario inserire il Codice della Sede alla quale il donatore appartiene",
   },
 
   donation_date: {
     type: String,
-    required: "Data della donazione",
+    required: "E' necessario inserire la Data della donazione",
   },
 
   status: {

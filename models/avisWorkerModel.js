@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var AvisWorkerSchema = new Schema({
   name: {
     type: String,
-    required: "Inserire un nome per il lavoratore avis",
+    required: "E' necessario inserire un nome per il lavoratore avis",
   },
   created_date: {
     type: Date,
@@ -16,15 +16,15 @@ var AvisWorkerSchema = new Schema({
   },
   start_hour: {
     type: String,
-    required: "Orario di Inizio di lavoro",
+    required: "E' necessario inserire un orario di Inizio di lavoro",
   },
   end_hour: {
     type: String,
-    required: "Orario di Fine Lavoro",
+    required: "E' necessario inserire un orario di Fine Lavoro",
   },
   facility_code: {
     type: String,
-    required: "Codice della Sede alla quale il donatore appartiene",
+    required: "E' necessario inserire un codice della Sede alla quale il donatore appartiene",
   },
   working_days: [
     {
@@ -58,11 +58,10 @@ var AvisWorkerSchema = new Schema({
           "analyst",
           "employee"
         ],
-        message: `Il ruolo dell'utente può essere soltanto 'doctor','analyst','employee','facility','donor','admin','avis'.`,
+        message: `Il ruolo del avis worker può essere soltanto 'doctor','analyst','employee'.`,
       },
     },
   ],
 });
-
 
 module.exports = mongoose.model("AvisWorker", AvisWorkerSchema);

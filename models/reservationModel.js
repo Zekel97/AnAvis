@@ -16,15 +16,15 @@ var ReservationSchema = new Schema({
   },
   date: {
     type: String,
-    required: "Data della Prenotazione",
+    required: "E' necessario inserire una data per questa prenotazione",
   },
   slot: {
     type: String,
-    required: "Slot orario della Prenotazione",
+    required: "E' necessario inserire uno slot per questa prenotazione",
   },
   facility_code: {
     type: String,
-    required: "Codice della Sede alla quale il donatore appartiene",
+    required: "E' necessario inserire il Codice della Sede alla quale la reservation appartiene",
   },
   module_path: {
     type: String,

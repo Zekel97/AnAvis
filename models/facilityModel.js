@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var FacilitySchema = new Schema({
   name: {
     type: String,
-    required: "Inserire un nome per la sede",
+    required: "E' necessario inserire un nome per la sede",
   },
   created_date: {
     type: Date,
