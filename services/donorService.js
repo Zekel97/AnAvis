@@ -66,6 +66,7 @@ exports.getDonorsByFacilityAndBloodType = async (facility, bloodType)=>{
 
 exports.donorCanDonate = (donor) => {
   const last_donation = donor.last_donation_date;
+  if(!last_donation) return true;
   return !(moment(last_donation).add(3, "M").isAfter(moment()));
 }
 

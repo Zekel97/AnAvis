@@ -22,20 +22,6 @@ exports.checkAuth = function (req,res,next){
 
 
 /**
- * Continua solo se il ruolo combacia
- * 
- * Sostituire req.jwt_user.role.includes(role); con role.includes(req.jwt_user.role) e tutti i role passarli come esempio ['doctor'] 
- */
-exports.allowOnlyRole = function (role) { 
-    
-    return (req, res, next) => {
-        const userCanView = req.jwt_user.role.includes(role);
-        if(!userCanView) res.status(401).send({message:"You are not allowed to see this data"})
-        else {next();}
-    }
-}
-
-/**
  * Prende facility_code da analyst, donor, employee e doctor e lo mette nel body.
  * 
  */
