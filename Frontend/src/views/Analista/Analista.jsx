@@ -50,7 +50,7 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/analysts/'+event;
 
-          axios.delete(url,{
+          return axios.delete(url,{
             headers: {
               "x-access-token":AuthService.getCurrentToken()
             }})
@@ -59,11 +59,9 @@ setDeleteId = event => {
               {
                 alert("Eliminato con successo!");
               }
-              else
-              {
-                alert("Ops! C'è stato un errore!");
-              }
-            })   
+            }).catch(err => {
+              alert(err.response.data.message);
+            })
             
       }
 
@@ -106,7 +104,7 @@ editHandleSubmit = event => {
     var r = window.confirm("Sicuro di voler confermare la modifica?"); 
     if(r === true)
     {
-    axios.patch(url, {
+    return axios.patch(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
@@ -116,19 +114,12 @@ editHandleSubmit = event => {
         "x-access-token":AuthService.getCurrentToken()
       }})
       .then(res => {
-        
-
         if(res.status === updated)
         {
           alert("Modificato con successo!");
         }
-        else
-        {
-          alert("Ops! C'è stato un errore!");
-        }
-            
-        console.log("Prova edit analista");
-
+      }).catch(err => {
+        alert(err.response.data.message);
       })
     }
   }
@@ -140,7 +131,7 @@ editHandleSubmit = event => {
     var r = window.confirm("Sicuro di voler confermare la creazione?"); 
       if(r === true)
       {
-    axios.post(url, {
+      return axios.post(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
@@ -157,15 +148,13 @@ editHandleSubmit = event => {
         {
           alert("Creato con successo!");
         }
-        else
-        {
-          alert("Ops! C'è stato un errore!");
-        }
-
+        window.location.reload(false);
+      }).catch(err => {
+        alert(err.response.data.message);
+        window.location.reload(false);
       })
       
     }
-      window.location.reload(false);
   }
 
   handleChangeName = event => {
@@ -206,7 +195,7 @@ editHandleSubmit = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.creaNuovoAnalista()}> Crea Analista</Button>
               <Card
-                title="Analist List"
+                title="Lista Analisti"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -225,24 +214,19 @@ editHandleSubmit = event => {
                         return (
                           <tr key={key}>
                             <td>
-                                {
-                                prop._id
-                                }
-                            </td>
-                            <td>
                               {
                                 prop.name
                               }
                             </td>
                             <td>
                               {
-                                prop.end_hour
+                                prop.start_hour
                                 
                               }
                             </td>
                             <td>
                               {
-                                prop.start_hour
+                                prop.end_hour
                               }
                             </td>
                             <td>
@@ -278,7 +262,7 @@ editHandleSubmit = event => {
             <Col md={15}>
                 <Button type="button" onClick={() => this.indietro()}> Indietro</Button>
                 <Card
-                title="Edit Analista"
+                title="Visualizza Analista"
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                     <FormInputs

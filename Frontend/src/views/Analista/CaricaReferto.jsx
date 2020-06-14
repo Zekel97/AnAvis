@@ -88,7 +88,7 @@ class CaricaReferto extends Component {
       
           const url = 'http://localhost:3000/api/v1/donations/'+this.state.donation_id;
 
-          axios.patch(url, data,{
+          return axios.patch(url, data,{
             headers: {
               "x-access-token":AuthService.getCurrentToken()
             }})
@@ -97,11 +97,10 @@ class CaricaReferto extends Component {
             {
               alert("Caricato con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
-            })   
+            window.location.reload(false);
+            }).catch(err => {
+              alert(err.response.data.message);
+            })
 
       }
       else

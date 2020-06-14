@@ -12,8 +12,8 @@ class UserPage extends Component {
   }
   componentDidMount()
   {
+    
     authService.getRoleId();
-
     if(authService.getCurrentRole() === "donor")
     {
       this.getDonations();
@@ -107,7 +107,7 @@ class UserPage extends Component {
     {
       return(
         <div>
-          <h3>Nessuna donazione effettuata ancora!</h3>
+          <h3>Nessuna prenotazione effettuata ancora!</h3>
         </div>
       )
     }
@@ -192,7 +192,7 @@ class UserPage extends Component {
     }
     else
     {
-      return authService.getCurrentRole();
+      return authService.getCurrentName();
     }
   }
 

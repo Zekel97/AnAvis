@@ -28,7 +28,6 @@ componentDidMount() {
     }})
   .then(response => response.data)
   .then((data) => {
-      console.log(data.data);
       this.setState({ sedi_avis: data.data.facilities })
       })
 
@@ -45,26 +44,21 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/facilities/'+event;
 
-          axios.delete(url,{
+          return axios.delete(url,{
             headers: {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-
-              console.log(res.status);
-
               if(res.status === deleted)
               {
                 alert("Eliminato con successo!");
               }
-              else
-              {
-                alert("Ops! C'è stato un errore!");
-              }
+              window.location.reload(false);
+            }).catch(err => {
+              alert(err.response.data.message);
             })   
             
       }
-      window.location.reload(false);
 
 }
 
@@ -80,7 +74,6 @@ setEditId = event => {
     .then(res => {
         this.setState({ sedeView: res.data.data.facility });
         this.setState({ name: res.data.data.facility.name});
-        console.log(res.data.data.facility);
         })
 
 }
@@ -99,7 +92,7 @@ editHandleSubmit = event => {
       if(r === true)
       {
 
-    axios.patch(url, {
+    return axios.patch(url, {
       "name": this.state.name
     },{
       headers: {
@@ -110,13 +103,11 @@ editHandleSubmit = event => {
             {
               alert("Modifica effettuata con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
+            window.location.reload(false);
+      }).catch(err => {
+        alert(err.response.data.message);
       })
     }
-      window.location.reload(false);
 
   }
 
@@ -128,7 +119,7 @@ createHandleSubmit = event => {
       if(r === true)
       {
 
-    axios.post(url, {
+    return axios.post(url, {
       "name":this.state.name,
       "mail": this.state.mail,
       "password":this.state.password
@@ -141,13 +132,11 @@ createHandleSubmit = event => {
         {
           alert("Creato con successo!");
         }
-        else
-        {
-          alert("Ops! C'è stato un errore!");
-        }
+        window.location.reload(false);
+      }).catch(err => {
+        alert(err.response.data.message);
       })
     }
-      window.location.reload(false);
 
   }
 
@@ -219,7 +208,7 @@ createHandleSubmit = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.indietro()}> Indietro</Button>
                 <Card
-                title="Edit Sede Avis"
+                title="Visualizza Sede Avis"
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                     <FormInputs

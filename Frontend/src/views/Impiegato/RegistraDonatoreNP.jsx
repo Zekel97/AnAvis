@@ -61,19 +61,23 @@ class RegistraDonatoreNP extends Component {
 
   handleSubmit = event => {
 
-    const data = new FormData();
+    var data = new FormData();
 
     data.append('donor_id', this.state.user_code);
     data.append('module', this.state.module);
     data.append('facility_code', AuthService.getCurrentFacilityCode());
     
+    console.log(this.state.user_code);
+    console.log(this.state.module);
+    console.log(AuthService.getCurrentFacilityCode());
+    console.log(data);
+
     var r = window.confirm("Sicuro di voler confermare la registrazione?"); 
       if(r === true)
       {
-
     const url = 'http://localhost:3000/api/v1/reservations/';
-
-    axios.post(url, data,{
+        
+    return axios.post(url, data,{
       headers: {
         "x-access-token":AuthService.getCurrentToken()
       }})
@@ -84,11 +88,14 @@ class RegistraDonatoreNP extends Component {
             }
             else
             {
-              alert("Ops! C'è stato un errore!");
+              console.log("CODICE - "+res.status);
             }
-      })   
+            window.location.reload(false);
+          }).catch(err => {
+            alert(err.response.data.message);
+          })  
+      
     }
-      window.location.reload(false);
 
   }
 
@@ -101,7 +108,7 @@ class RegistraDonatoreNP extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="Donor List"
+                title="Lista Donatori"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -165,6 +172,8 @@ class RegistraDonatoreNP extends Component {
 
                     <input type="file" name="file" onChange={this.onChangeHandler}/>
                     
+                    <a href="http://localhost:3000/uploads/Modulo_Predefinito.pdf" target="_blank">Scarica Modulo Qui</a>
+
                     <Button bsStyle="info" pullRight fill type="submit">
                       Send
                     </Button>

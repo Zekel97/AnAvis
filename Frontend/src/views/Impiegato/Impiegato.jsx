@@ -48,7 +48,7 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/employees/'+event;
 
-          axios.delete(url,{
+          return axios.delete(url,{
             headers: {
               "x-access-token":AuthService.getCurrentToken()
             }})
@@ -57,14 +57,12 @@ setDeleteId = event => {
             {
               alert("Eliminato con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
+            window.location.reload(false);
+            }).catch(err => {
+              alert(err.response.data.message);
             })   
             
       }
-      window.location.reload(false);
 }
 
 setEditId = event => {
@@ -106,7 +104,7 @@ editHandleSubmit = event => {
     var r = window.confirm("Sicuro di voler confermare la modifica?"); 
     if(r === true)
     {
-    axios.patch(url, {
+    return axios.patch(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
@@ -120,13 +118,11 @@ editHandleSubmit = event => {
             {
               alert("Modificato con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
+            window.location.reload(false);
+      }).catch(err => {
+        alert(err.response.data.message);
       })
     }
-      window.location.reload(false);
   }
 
 createHandleSubmit = event => {
@@ -136,7 +132,7 @@ createHandleSubmit = event => {
       if(r === true)
       {
     
-    axios.post(url, {
+    return axios.post(url, {
       "name": this.state.name,
       "start_hour": this.state.start_hour,
       "end_hour": this.state.end_hour, 
@@ -154,13 +150,11 @@ createHandleSubmit = event => {
             {
               alert("Creato con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
+            window.location.reload(false);
+      }).catch(err => {
+        alert(err.response.data.message);
       })
     }
-      window.location.reload(false);
 
       
   }
@@ -205,7 +199,7 @@ handleChange = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.creaNuovoImpiegato()}> Crea Impiegato</Button>
               <Card
-                title="List Impiegati"
+                title="Lista Impiegati"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -269,7 +263,7 @@ handleChange = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.indietro()}> Indietro</Button>
                 <Card
-                title="Edit Impiegato"
+                title="Visualizza Impiegato"
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                    <FormInputs
@@ -379,7 +373,6 @@ handleChange = event => {
                       ]}
                     />
                     
-                  <p>Working days: <strong>attuali: {this.state.working_days.toString()}</strong></p>
                   <select multiple={true} value={this.props.arrayOfOptionValues} onChange={this.handleChange}>
                     <option value={"lunedì"}>Lunedì</option>
                     <option value={"martedì"}>Martedì</option>

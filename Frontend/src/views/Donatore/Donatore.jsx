@@ -3,7 +3,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import Button from "components/CustomButton/CustomButton.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Card from "components/Card/Card.jsx";
-import { DonArray } from "variables/Variables.jsx";
+import { DonatoreArray } from "variables/Variables.jsx";
 import axios from "axios";
 import AuthService from "../../services/auth.service";
 import {updated, success, deleted} from "../../variables/Codes.jsx";
@@ -35,7 +35,6 @@ componentDidMount() {
   .then(response => response.data)
   .then((data) => {
       this.setState({ donors: data.data.donors })
-      console.log(this.state.donors)
       })
 
 }
@@ -46,9 +45,7 @@ creaNuovoDonor = event => {
 
 convertDate(date)
 {
-  console.log(date);
   const newDate = moment(date).format("DD.MM. h:mm");
-  console.log(newDate);
   return date;
 }
 
@@ -59,27 +56,23 @@ setDeleteId = event => {
       {
           const url = 'http://localhost:3000/api/v1/donors/'+event;
 
-          axios.delete(url,{
+          return axios.delete(url,{
             headers: {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              
+              console.log(res);
             if(res.status === deleted)
             {
               alert("Eliminato con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
-            }).catch(error => {
-              console.log(error.message);
-            })   
+            window.location.reload(false);
+            }).catch(err => {
+              alert(err.response.data.message);
+            })
             
       }
 
-      window.location.reload(false);
       
 }
 
@@ -132,10 +125,9 @@ editHandleSubmit = event => {
               {
                 alert("Modificato con successo!");
               }
-              else
-              {
-                alert("Ops! C'è stato un errore!");
-              }
+              window.location.reload(false);
+        }).catch(err => {
+          alert(err.response.data.message);
         })
     
       
@@ -165,15 +157,11 @@ createHandleSubmit = event => {
               {
                 alert("Creato con successo!");
               }
-              else
-              {
-                alert("Ops! C'è stato un errore!");
-              }
-        }).catch(error => {
-          console.log(error.message);
+              window.location.reload(false);
+        }).catch(err => {
+          alert(err.response.data.message);
         })
     }
-      window.location.reload(false);
   }
 
   dropdown() {
@@ -216,7 +204,7 @@ createHandleSubmit = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.creaNuovoDonor()}> Crea Donatore</Button>
               <Card
-                title="Donor List"
+                title="Lista Donatori"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -224,7 +212,7 @@ createHandleSubmit = event => {
                     <thead>
                       <tr>
                         {
-                          DonArray.map((prop, key) => {
+                          DonatoreArray.map((prop, key) => {
                             return <th key={key}>{prop}</th>;
                           })
                         }
@@ -248,7 +236,7 @@ createHandleSubmit = event => {
                             </td>
                             <td>
                               {
-                                moment(prop.last_donation_date).format("DD/MM/YYYY")
+                                prop.last_donation_date ? moment(prop.last_donation_date).format("DD/MM/YYYY") : "Non ancora donato"
                               }
                             </td>
                             <td>
@@ -278,7 +266,7 @@ createHandleSubmit = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.indietro()}> Indietro</Button>
                 <Card
-                title="Edit Profile"
+                title="Visualizza Donatore"
                 content={
                   <form onSubmit={this.editHandleSubmit} >
                     <FormInputs
@@ -315,7 +303,7 @@ createHandleSubmit = event => {
             <Col md={12}>
                 <Button type="button" onClick={() => this.indietro()}> Indietro</Button>
                 <Card
-                title="Edit Profile"
+                title="Crea Donatore"
                 content={
                   <form onSubmit={this.createHandleSubmit} >
                     <FormInputs

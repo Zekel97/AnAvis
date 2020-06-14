@@ -68,7 +68,7 @@ componentDidMount() {
                             </td>
                             <td>
                               {
-                                prop.user_code
+                                prop.donor_id
                               }
                             </td>
                           </tr>

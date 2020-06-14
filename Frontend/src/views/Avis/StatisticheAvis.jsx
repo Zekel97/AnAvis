@@ -28,22 +28,22 @@ class StatisticheAvis extends Component {
                     <thead>
                 <tr>
                     <td>
-                        Facilities
+                        Sedi
                     </td>
                     <td>
-                        Donors
+                        Donatori
                     </td>
                     <td>
-                        Workers
+                        Impiegati
                     </td>
                     <td>
-                        Active Reservations
+                        Prenotazioni Attive
                     </td>
                     <td>
-                        Open Donations
+                        Donazioni Aperte
                     </td>
                     <td>
-                        Closed Donations
+                        Donazioni Chiuse
                     </td>
                 </tr>
                 </thead>

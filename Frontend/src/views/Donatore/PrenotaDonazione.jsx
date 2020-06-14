@@ -46,6 +46,8 @@ class PrenotaDonazione extends Component {
     {
       return <div>
         <br />
+        <a href="http://localhost:3000/uploads/Modulo_Predefinito.pdf" target="_blank">Scarica Modulo Qui</a>
+        <br />
         <p>Upload Modulo:</p>
         <input type="file" name="file" onChange={this.onChangeHandler}/>
       </div>
@@ -102,15 +104,12 @@ class PrenotaDonazione extends Component {
         if(moment(trueDate,"DD/MM/YYYY").isAfter(moment()))
         {
             const url = 'http://localhost:3000/api/v1/reservations/daily_slots?date=';
-            console.log("x-access-token"+AuthService.getCurrentToken());
-            console.log(url+moment(trueDate,"DD/MM/YYYY").format("YYYY-MM-DD"));
             axios.get(url+moment(trueDate,"DD/MM/YYYY").format("YYYY-MM-DD"), {
                 headers: {
                   "x-access-token":AuthService.getCurrentToken()
                 }
               }).then(response => response.data)
               .then((data) => {
-
                   let slot = new Array();
                   Object.keys(data.data).map((prop, key) => {
                     if(prop !== 'date' && prop!== 'giorno' && prop !== 'medici_non_disponibili'){
@@ -119,7 +118,6 @@ class PrenotaDonazione extends Component {
                 })
 
                 this.setState({slot : slot});
-                console.log(data.data);                
                 this.setState({giorno : data.data.giorno});
                   
             })
@@ -150,13 +148,14 @@ class PrenotaDonazione extends Component {
     data.append('module', this.state.module);
     data.append('date',moment(this.state.date, "YYYY-MM-DD").format("DD/MM/YYYY"));
     data.append('slot',this.state.selectedSlot);
+    data.append('facility_code', AuthService.getCurrentFacilityCode());
     
     var r = window.confirm("Sicuro di voler confermare la prenotazione?"); 
       if(r === true)
       {
     const url = 'http://localhost:3000/api/v1/reservations/';
 
-    axios.post(url, data,{
+    return axios.post(url, data,{
     headers: {
       "x-access-token":AuthService.getCurrentToken()
     }})
@@ -165,13 +164,11 @@ class PrenotaDonazione extends Component {
             {
               alert("Prenotazione inviata con successo!");
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
+            window.location.reload(false);   
+      }).catch(err => {
+        alert(err.response.data.message);
       })
     }
-      window.location.reload(false);   
   }
 
   render() {
@@ -198,6 +195,7 @@ class PrenotaDonazione extends Component {
                     />
                     {this.timeSlotShow()}
 
+                    
                     {this.moduleShow()}
                     
                     <Button bsStyle="info" pullRight fill type="submit">

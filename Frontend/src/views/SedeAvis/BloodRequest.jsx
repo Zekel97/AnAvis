@@ -33,13 +33,14 @@ class BloodRequest extends Component {
 
 
      handleSubmit = event => {
+       event.preventDefault();
         const url = 'http://localhost:3000/api/v1/facilities/'+AuthService.getCurrentFacilityCode()+"/require_blood";
 
         var r = window.confirm("Sicuro di voler confermare la richiesta?"); 
       if(r === true)
       {
 
-        axios.post(url, {"blood_type" : this.state.bloodType},{
+        return axios.post(url, {"blood_type" : this.state.bloodType},{
           headers: {
             "x-access-token":AuthService.getCurrentToken()
           }})
@@ -50,17 +51,11 @@ class BloodRequest extends Component {
               alert("Richiesta inviata con successo!");
               this.setState({donorsContacted : res.data.data.donors_contacted});
             }
-            else
-            {
-              alert("Ops! C'è stato un errore!");
-            }
-
           }).catch(err => {
-            console.log(err);
+            alert(err.response.data.message);
           })
         }
     
-          event.preventDefault();
       }
 
       contactedDonorsShow()
