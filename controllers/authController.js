@@ -19,7 +19,7 @@ exports.login = catchAsync(async (req, res, next) => {
         expiresIn: 86400 // expires in 24 hours
       });
         
-       return res.status(200).json({ auth: true, token: token });
+    return res.status(200).json({ auth: true, token: token });
 });
 
 exports.me = catchAsync(async (req, res, next) => {

@@ -72,7 +72,6 @@ exports.getActiveReservations = catchAsync(async (req, res, next) => {
 
   const reservation = await reservationService.getReservationsByDonor(req.params.id);
   
-  if(!reservation){ return next(new AppError("No todo found with that ID",404))}
   
   res.status(200).json({
     status: "success",
@@ -86,8 +85,6 @@ exports.getActiveReservations = catchAsync(async (req, res, next) => {
 exports.getOldDonations = catchAsync(async (req, res, next) => {
 
   const donations = await donationService.getDonationsByDonor(req.params.id);
-  
-  if(!donations){ return next(new AppError("No todo found with that ID",404))}
   
   res.status(200).json({
     status: "success",
