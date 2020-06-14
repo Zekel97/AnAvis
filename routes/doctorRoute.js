@@ -10,7 +10,7 @@ const router = express.Router();
 router
   .route("/")
   .get(authMiddleware.checkAuth, authMiddleware.checkFacilityCode,doctorController.getAllDoctors)
-  .post(authMiddleware.checkAuth, authMiddleware.allowOnlyRole("facility"), doctorController.createDoctor);
+  .post(authMiddleware.checkAuth, doctorController.createDoctor);
 
 router
   .route("/:id")

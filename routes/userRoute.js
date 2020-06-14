@@ -17,6 +17,5 @@ router
 router
   .route("/:id/reset")
   .patch(authMiddleware.checkAuth, userController.resetPassword);
-  //.get(authMiddleware.allowOnlyRole("doctor"), userController.getAllUser);
 
   module.exports = router;
