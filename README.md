@@ -28,10 +28,10 @@ Il sistema è disponibile come applicazione web. Per eseguire il codice sorgente
 
 ```
 git clone https://github.com/Zekel97/AnAvis
-npm i\*
+npm i *
 npm start
 cd ./Frontend
-npm i\*
+npm i *
 npm start
 ```
 
