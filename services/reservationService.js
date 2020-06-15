@@ -47,35 +47,35 @@ reservationData.date = moment().format("L");
 return await Reservation.create(reservationData);
 };
 
-exports.calcolaSlotDisponibili = (giornoScelto, medici, prenotazioni) => {
-  const giorno = moment(giornoScelto).format("YYYY-MM-DD");
-  var mappaDiUnGiorno = new Map();
+exports.checkAvaiableSlot = (selectedDay, doctors, prenotations) => {
+  const day = moment(selectedDay).format("YYYY-MM-DD");
+  var dayMap = new Map();
 
-  mappaDiUnGiorno.set("date", moment(giornoScelto).format("L"));
-  mappaDiUnGiorno.set("medici_non_disponibili", new Array());
-  mappaDiUnGiorno.set("giorno", moment(giornoScelto).format("dddd"));
+  dayMap.set("date", moment(selectedDay).format("L"));
+  dayMap.set("medici_non_disponibili", new Array());
+  dayMap.set("giorno", moment(selectedDay).format("dddd"));
 
-  medici.forEach((medico) => {
-    if (medico.working_days.includes(moment(giornoScelto).format("dddd"))) {
-      mappaDiUnGiorno = calcolaSlotOrariInUnGiorno(
-        mappaDiUnGiorno,
-        giorno,
-        medico.start_hour,
-        medico.end_hour
+  doctors.forEach((doctor) => {
+    if (doctor.working_days.includes(moment(selectedDay).format("dddd"))) {
+      dayMap = calcolaSlotOrariInUnGiorno(
+        dayMap,
+        day,
+        doctor.start_hour,
+        doctor.end_hour
       );
     } else {
-      let mediciNonDisponibili = mappaDiUnGiorno.get("medici_non_disponibili");
-      mediciNonDisponibili.push(medico.name);
-      mappaDiUnGiorno.set("medici_non_disponibili", mediciNonDisponibili);
+      let mediciNonDisponibili = dayMap.get("medici_non_disponibili");
+      mediciNonDisponibili.push(doctor.name);
+      dayMap.set("medici_non_disponibili", mediciNonDisponibili);
     }
   });
-  mappaDiUnGiorno = rimuoviPrenotazioni(
-    mappaDiUnGiorno,
-    prenotazioni,
-    moment(giornoScelto).format("L")
+  dayMap = removePrenotations(
+    dayMap,
+   prenotations,
+    moment(selectedDay).format("L")
   );
 
-  let obj = Array.from(new Map([...mappaDiUnGiorno.entries()].sort())).reduce(
+  let obj = Array.from(new Map([...dayMap.entries()].sort())).reduce(
     (obj, [key, value]) => Object.assign(obj, { [key]: value }),
     {}
   );
@@ -97,17 +97,17 @@ function calcolaSlotOrariInUnGiorno(result, giorno, start_hour, end_hour) {
   return result;
 }
 
-function rimuoviPrenotazioni(mappaDiUnGiorno, prenotazioni, date) {
+function removePrenotations(dayMap, prenotations, date) {
 
-  prenotazioni.forEach((prenotazione) => {
-    if (prenotazione.date === date && prenotazione.slot !== "unreserved user") {
-      var numeroPrenotazioni = mappaDiUnGiorno.get(prenotazione.slot) - 1;
-      if (numeroPrenotazioni === 0) {
-        mappaDiUnGiorno.delete(prenotazione.slot);
+ prenotations.forEach((prenotation) => {
+    if (prenotation.date === date && prenotation.slot !== "unreserved user") {
+      var prenotationNumber = dayMap.get(prenotation.slot) - 1;
+      if (prenotationNumber === 0) {
+        dayMap.delete(prenotation.slot);
       } else {
-        mappaDiUnGiorno.set(prenotazione.slot, numeroPrenotazioni);
+        dayMap.set(prenotation.slot, prenotationNumber);
       }
     }
   });
-  return mappaDiUnGiorno;
+  return dayMap;
 }

@@ -60,7 +60,7 @@ exports.getDailySlots = catchAsync(async (req, res) => {
   const date = (req.query.date!=null)?req.query.date:moment().format("YYYY-MM-DD");
   const doctors = await AvisWorkerService.getAllWorkerByRole('doctor');
   const reservations = await ReservationService.findReservationsByDateInFacility(moment(date, "YYYY-MM-DD").format("L"), req.body.facility_code);
-  const dailySlots = ReservationService.calcolaSlotDisponibili(
+  const dailySlots = ReservationService.checkAvaiableSlot(
     date,
     doctors,
     reservations
