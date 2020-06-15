@@ -7,9 +7,7 @@ moment.locale("it");
 
 exports.createReservation = catchAsync(async (req, res) => {
 req.body.module_path = req.file.path;
-console.log(req.body);
 const newReservation =( req.body.slot )? await ReservationService.createReservation(req.body) :await ReservationService.createManualReservation(req.body);
-console.log(newReservation);
 
   res.status(201).json({
     status: "success",

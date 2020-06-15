@@ -33,7 +33,6 @@ componentDidMount() {
     }})
   .then(response => response.data)
   .then((data) => {
-    console.log(data.data);
       this.setState({ analists: data.data.analysts })
       })
 
@@ -69,7 +68,6 @@ setDeleteId = event => {
 }
 
 setEditId = event => {
-    console.log(event);
     this.setState({edit_analist : event});
     
     const url = 'http://localhost:3000/api/v1/analysts/'+event;
@@ -91,7 +89,6 @@ setEditId = event => {
 }
 
 indietro = event => {
-    console.log("Indietro");
     this.setState({create_analist : null});
     this.setState({edit_analist : null});
 }

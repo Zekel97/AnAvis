@@ -65,9 +65,7 @@ setDeleteId = event => {
 
 }
 
-setEditId = event => {
-    console.log("modifica id");
-    
+setEditId = event => {    
     this.setState({edit_doctor : event});
     
     const url = 'http://localhost:3000/api/v1/doctors/'+event;
@@ -90,7 +88,6 @@ setEditId = event => {
 }
 
 indietro = event => {
-    console.log("Indietro");
     this.setState({create_doctor : null});
     this.setState({edit_doctor : null});
 

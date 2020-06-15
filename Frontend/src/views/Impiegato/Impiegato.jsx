@@ -66,13 +66,11 @@ setDeleteId = event => {
 }
 
 setEditId = event => {
-    console.log("modifica id");
     
     this.setState({edit_impiegato : event});
     
     const url = 'http://localhost:3000/api/v1/employees/'+event;
 
-    console.log(url);
   axios.get(url,{
     headers: {
       "x-access-token":AuthService.getCurrentToken()
@@ -89,7 +87,6 @@ setEditId = event => {
 }
 
 indietro = event => {
-    console.log("Indietro");
     this.setState({create_impiegato : null});
     this.setState({edit_impiegato : null});
 
@@ -99,7 +96,6 @@ editHandleSubmit = event => {
 
 
     const url = 'http://localhost:3000/api/v1/employees/'+this.state.edit_impiegato;
-    console.log(url);
     
     var r = window.confirm("Sicuro di voler confermare la modifica?"); 
     if(r === true)
@@ -177,7 +173,6 @@ handleChangeEndHour = event => {
 
 handleChange = event => {
   var options = event.target.options;
-  console.log(options[1].value);
   var value = [];
   for (var i = 0, l = options.length; i < l; i++) {
     if (options[i].selected) {

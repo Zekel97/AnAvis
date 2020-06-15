@@ -28,7 +28,6 @@ componentDidMount() {
 
 }
 setStatusId = event => {
-  console.log(event);
   this.setState({selected_donor: event});
 }
 
@@ -38,9 +37,7 @@ getSelectedDonor(){
 
 convertDate(date)
 {
-  console.log(date);
   const newDate = moment(date).format("DD.MM. h:mm");
-  console.log(newDate);
   return date;
 }
 

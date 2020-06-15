@@ -61,7 +61,6 @@ setDeleteId = event => {
               "x-access-token":AuthService.getCurrentToken()
             }})
             .then(res => {
-              console.log(res);
             if(res.status === deleted)
             {
               alert("Eliminato con successo!");
@@ -98,7 +97,6 @@ setEditId = event => {
 }
 
 indietro = event => {
-    console.log("Indietro");
     this.setState({selected_donor : null});
     this.setState({create_donor : null});
     this.setState({edit_donor : null});

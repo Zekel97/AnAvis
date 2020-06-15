@@ -46,8 +46,6 @@ componentDidMount() {
                     </thead>
                     <tbody>
                       {this.state.docs.map((prop, key) => {
-                        console.log(prop);
-                        console.log(key);
                         return (
                           <tr key={key}>
                             <td>

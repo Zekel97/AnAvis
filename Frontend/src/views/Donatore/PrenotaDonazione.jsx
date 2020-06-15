@@ -154,17 +154,17 @@ class PrenotaDonazione extends Component {
       if(r === true)
       {
     const url = 'http://localhost:3000/api/v1/reservations/';
-
+    
     return axios.post(url, data,{
-    headers: {
-      "x-access-token":AuthService.getCurrentToken()
-    }})
+      headers: {
+        "x-access-token":AuthService.getCurrentToken()
+      }})
       .then(res => {
+
         if(res.status === created)
-            {
-              alert("Prenotazione inviata con successo!");
-            }
-            window.location.reload(false);   
+        {
+          alert("Prenotazione inviata con successo!");
+        }
       }).catch(err => {
         alert(err.response.data.message);
       })

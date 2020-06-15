@@ -66,11 +66,6 @@ class RegistraDonatoreNP extends Component {
     data.append('donor_id', this.state.user_code);
     data.append('module', this.state.module);
     data.append('facility_code', AuthService.getCurrentFacilityCode());
-    
-    console.log(this.state.user_code);
-    console.log(this.state.module);
-    console.log(AuthService.getCurrentFacilityCode());
-    console.log(data);
 
     var r = window.confirm("Sicuro di voler confermare la registrazione?"); 
       if(r === true)
@@ -86,10 +81,7 @@ class RegistraDonatoreNP extends Component {
             {
               alert("Registrazione creata con successo!");
             }
-            else
-            {
-              console.log("CODICE - "+res.status);
-            }
+
             window.location.reload(false);
           }).catch(err => {
             alert(err.response.data.message);

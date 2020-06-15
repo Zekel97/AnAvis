@@ -85,7 +85,6 @@ indietro = event => {
 }
 
 editHandleSubmit = event => {
-  console.log(this.state.sedeView);
     const url = 'http://localhost:3000/api/v1/facilities/'+this.state.edit_sede;
 
     var r = window.confirm("Sicuro di voler confermare la modifica?"); 

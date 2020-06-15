@@ -60,7 +60,6 @@ export default class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.mail, this.state.password).then(
         () => {
-          console.log(AuthService.getCurrentToken());
           this.props.history.push("/"+AuthService.getCurrentRole()+"/userpage");
           window.location.reload();
           

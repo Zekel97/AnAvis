@@ -23,7 +23,6 @@ class UserPage extends Component {
       headers: {
         "x-access-token":authService.getCurrentToken()
       }}).then(res=>{
-        console.log(res.data.data.reservation);
         this.setState({datiReservation: res.data.data.reservation});
       })
   }
@@ -81,9 +80,6 @@ class UserPage extends Component {
 
     return (
       <div className="content">
-
-        <h3> Welcome, <strong>{authService.getCurrentRole()}</strong> </h3>
-
 
         {this.showReservations()}
         

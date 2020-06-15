@@ -104,56 +104,56 @@ const dashboardRoutes = [
   },
   {
     path: "/analista-crud",
-    name: "Analista",
+    name: "Gestione Analisti",
     icon: "pe-7s-next-2",
     component: Analista,
     layout: "/facility"
   },
   {
     path: "/analista-crud",
-    name: "Analista",
+    name: "Gestione Analisti",
     icon: "pe-7s-next-2",
     component: Analista,
     layout: "/avis"
   },
   {
     path: "/donatore-crud",
-    name: "Donatore",
+    name: "Gestione Donatori",
     icon: "pe-7s-next-2",
     component: Donatore,
     layout: "/employee"
   },
   {
     path: "/dottore-crud",
-    name: "Dottore",
+    name: "Gestione Dottori",
     icon: "pe-7s-next-2",
     component: Dottore,
     layout: "/facility"
   },
   {
     path: "/impiegato-crud",
-    name: "Impiegato",
+    name: "Gestione Impiegati",
     icon: "pe-7s-next-2",
     component: Impiegato,
     layout: "/facility"
   },
   {
     path: "/dottore-crud",
-    name: "Dottore",
+    name: "Gestione Dottori",
     icon: "pe-7s-next-2",
     component: Dottore,
     layout: "/avis"
   },
   {
     path: "/impiegato-crud",
-    name: "Impiegato",
+    name: "Gestione Impiegati",
     icon: "pe-7s-next-2",
     component: Impiegato,
     layout: "/avis"
   },
   {
     path: "/sede-avis-crud",
-    name: "Sede Avis",
+    name: "Gestione Sedi Avis",
     icon: "pe-7s-next-2",
     component: SedeAvis,
     layout: "/avis"
@@ -202,7 +202,7 @@ const dashboardRoutes = [
   },
   {
     path: "/registra-donatore",
-    name: "Registra Donatore NP",
+    name: "Registra Donatore Non Prenotato",
     icon: "pe-7s-user",
     component: RegistraDonatoreNP,
     layout: "/employee"

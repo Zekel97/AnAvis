@@ -25,7 +25,6 @@ class UserPage extends Component {
   {
     let url = "http://localhost:3000/";
     url = url + url_part;
-    console.log(url);
     return url;
   }
 
@@ -36,7 +35,6 @@ class UserPage extends Component {
       headers: {
         "x-access-token":authService.getCurrentToken()
       }}).then(res=>{
-        console.log(res.data.data.reservation);
         this.setState({datiReservation: res.data.data.reservation});
       })
   }
@@ -48,7 +46,6 @@ class UserPage extends Component {
       headers: {
         "x-access-token":authService.getCurrentToken()
       }}).then(res=>{
-        console.log(res.data.data.donations);
         this.setState({datiDonation: res.data.data.donations});
       })
   }

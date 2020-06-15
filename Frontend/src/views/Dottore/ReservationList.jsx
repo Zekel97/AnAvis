@@ -39,7 +39,6 @@ urlify(url_part)
 {
   let url = "http://localhost:3000/";
   url = url + url_part;
-  console.log(url);
   return url;
 }
 

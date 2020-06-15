@@ -44,15 +44,12 @@ class CaricaReferto extends Component {
       }})
     .then(response => response.data)
     .then((data) => {
-      console.log(data.data.donations);
         if(data.data.donations.length !== 0)
         {
           this.setState({ donations: data.data.donations })
         }
         })
     .catch(function (error) {
-      
-     
       console.log(error);
     })
   
@@ -65,7 +62,6 @@ class CaricaReferto extends Component {
 
   onChangeHandler=event=>{
     this.setState({ referto: event.target.files[0],loaded: 0});
-    console.log(event.target.files[0]);
     }
 
     handleBack = event =>{
@@ -103,10 +99,7 @@ class CaricaReferto extends Component {
             })
 
       }
-      else
-      {
-          console.log("Ha rifiutato");
-      }
+
 
       window.location.reload(false);
 
