@@ -23,6 +23,15 @@ L'intero progetto si basa interamente su *JavaScript ES6*, ed è stato implement
 - *Express*: framework utilizzato per lo sviluppo del backend;
 - *Node.js*: runtime di JavaScript basato su JavaScript V8 di Google Chrome.
 
+## Lista delle iterazioni e relativi casi d'uso
+| Iterazione | Data inizio | Data fine | Casi d'uso |
+|------------|-------------|-----------|------------|
+|     1      |   06/04/20          |   20/04/20         |  Prenota Donazione, Crea Donazione Manuale, Avvia Donazione, Visualizza Prenotazioni Odierne, Visualizza Prenotazioni Future                                           |
+|     2      |   20/04/20          |   04/05/20         |   Registra Donatore Non Prenotato, Carica Referto, Visualizza Donazioni Aperte, Visualizza Prenotazioni                                              |
+|     3      |   04/05/20          |   18/05/20         |   Richiede Donazione, Gestisce Donatore, Gestisce Impiegato Avis, Gestisce Medico, Gestisce Analista, Gestisce Sede Avis                                            |
+|     4      |   18/05/20          |   01/06/20         |  Login, Logout, Promemoria Donazione, Verifica Possibilità Donazione                                           |
+|     5      |   01/06/20          |   15/06/20         |  Visualizza Prenotazioni Attive, Visualizza Storico Referti Donazione, Controlla Statistiche, Modifica Mail Utenti, Reset Password Utenti, Visualizza Utenti                                            |
+
 ## Come avviare il sistema
 Il sistema è disponibile come applicazione web. Per eseguire il codice sorgente è necessario digitare -in ordine- i seguenti comandi:
 
