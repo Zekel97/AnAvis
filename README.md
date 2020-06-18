@@ -28,7 +28,7 @@ L'intero progetto si basa interamente su *JavaScript ES6*, ed è stato implement
 |------------|-------------|-----------|------------|
 |     1      |   06/04/20          |   20/04/20         |  Prenota Donazione, Crea Donazione Manuale, Avvia Donazione, Visualizza Prenotazioni Odierne, Visualizza Prenotazioni Future                                           |
 |     2      |   20/04/20          |   04/05/20         |   Registra Donatore Non Prenotato, Carica Referto, Visualizza Donazioni Aperte, Visualizza Prenotazioni                                              |
-|     3      |   04/05/20          |   18/05/20         |   Richiede Donazione, Gestisce Donatore, Gestisce Impiegato Avis, Gestisce Medico, Gestisce Analista, Gestisce Sede Avis                                            |
+|     3      |   04/05/20          |   18/05/20         |   Richiesta Sangue, Gestisce Donatore, Gestisce Impiegato Avis, Gestisce Medico, Gestisce Analista, Gestisce Sede Avis                                            |
 |     4      |   18/05/20          |   01/06/20         |  Login, Logout, Promemoria Donazione, Verifica Possibilità Donazione                                           |
 |     5      |   01/06/20          |   15/06/20         |  Visualizza Prenotazioni Attive, Visualizza Storico Referti Donazione, Controlla Statistiche, Modifica Mail Utenti, Reset Password Utenti, Visualizza Utenti                                            |
 
