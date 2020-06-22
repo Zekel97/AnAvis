@@ -3,10 +3,8 @@ const donationsRoute = require("./routes/donationRoute.js");
 const reservationsRoute = require("./routes/reservationRoute.js");
 const doctorsRoute = require("./routes/doctorRoute.js");
 const donorsRoute = require("./routes/donorRoute.js");
-const cors = require("cors");
 
 const app = express();
-app.use(cors());
 
 app.use(express.json({ limit: "10kb" }));
 
